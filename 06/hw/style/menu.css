@@ -1,0 +1,162 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    background: #f6f5f5;
+    font-family: 'Inter', sans-serif;
+}
+
+.container {
+    width: 360px;
+    margin: 60px auto;
+    background: #fff;
+    border-radius: 24px;
+    padding: 48px 20px 60px;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.06);
+}
+
+button {
+    border: none;
+    background: transparent;
+    padding: 0;
+    cursor: pointer;
+}
+
+button img {
+    width: 26px;
+    height: 26px;
+}
+
+h1 {
+    font-family: 'inter', sans-serif;
+    margin: 18px 0 18px;
+    font-size: 32px;
+    font-weight: 700;
+    color: #000000;
+}
+
+form {
+    margin-bottom: 18px;
+}
+
+input {
+    width: 100%;
+    height: 44px;
+    border: none;
+    outline: none;
+    background: #f1f1f1;
+    border-radius: 12px;
+    padding: 0 14px;
+    font-size: 14px;
+    color: #333;
+}
+
+input::placeholder {
+    color: #999;
+}
+
+.menu-items {
+    display: flex;
+    gap: 14px;
+    margin-top: 10px;
+}
+
+.menu-position {
+    width: 104px;
+    padding: 12px 10px;
+    border-radius: 14px;
+    background: #f3f3f3;
+    text-align: center;
+    cursor: pointer;
+}
+
+.position-img {
+    width: 74px;
+    height: 100px;
+    border-radius: 14px;
+    background: #efefef;
+    margin: 0 auto 10px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.position-img img {
+    width: 38px;
+    height: 38px;
+    object-fit: contain;
+}
+
+.position-title {
+    margin: 0;
+    font-size: 14px;
+    color: #bdbdbd;
+    font-weight: 600;
+}
+
+.menu-position:hover {
+    background: #ffffff;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+}
+
+.menu-position:hover .position-img {
+    background: #eae2b7;
+}
+
+.menu-position:hover .position-title {
+    color: #111;
+}
+
+.section-title {
+    font-family: 'Inter', sans-serif;
+    margin: 26px 0 14px;
+    font-size: 20px;
+    font-weight: 700;
+    color: #003049;
+}
+
+.burger-list {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.burger-card {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
+    padding: 12px;
+    border-radius: 14px;
+    background: #fff;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
+}
+
+.burger-card:hover{
+  box-shadow: 0 8px 22px rgba(0,0,0,0.10);
+  transform: translateY(-2px);
+}
+
+.burger-img {
+    width: 64px;
+    height: 64px;
+    object-fit: contain;
+}
+
+.burger-title {
+    font-family: 'Inter', sans-serif;
+    font-size: 16px;
+    font-weight: 400;
+    margin: 0 0 6px;
+    color: #003049;
+}
+
+.burger-price {
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    color: #D62828;
+}
