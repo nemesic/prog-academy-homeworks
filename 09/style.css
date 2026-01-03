@@ -1,0 +1,102 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background: rgb(255, 255, 255);
+}
+
+.container {
+    position: relative;
+    width: 100%;
+    min-height: 100vh;
+}
+
+.card {
+    position: absolute;
+}
+
+.dia {
+    top: 60px;
+    left: 40px;
+    width: 500px;
+    height: 450px;
+    background: #000;
+    position: absolute;
+}
+
+.dia-logo {
+    position: absolute;
+    top: 80px;
+    left: 150px;
+    width: 220px;
+}
+
+.dia-flag {
+    position: absolute;
+    top: 280px;
+    left: 185px;
+    width: 150px;
+}
+
+.square {
+    position: absolute;
+    top: 450px;
+    left: 470px;
+    width: 420px;
+    height: 420px;
+    background: linear-gradient(to bottom, #ffd400 50% 100%);
+}
+
+.square-bg {
+    width: 100%;
+    height: 50%;
+}
+
+.square .mark {
+    position: absolute;
+    left: 50%;
+    top: 48%;
+    transform: translate(-50%, -51%);
+    width: 320px;
+}
+
+.circle-card {
+    position: absolute;
+    top: 820px;
+    left: 820px;
+    width: 420px;
+    height: 420px;
+    background: #fff;
+    border-radius: 20px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, .30);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.circle-shape {
+    width: 340px;
+    height: 360px;
+    border-radius: 50%;
+    background: linear-gradient(to bottom, #ffd400 50% 100%);
+    position: relative;
+}
+
+
+.circle-glyph {
+    position: absolute;
+    width: 240px;
+    top: 60%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: block;
+}
+
+img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+}
