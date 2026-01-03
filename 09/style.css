@@ -39,6 +39,7 @@ body {
     top: 280px;
     left: 185px;
     width: 150px;
+    border-radius: 16px;
 }
 
 .square {
@@ -48,6 +49,7 @@ body {
     width: 420px;
     height: 420px;
     background: linear-gradient(to bottom, #ffd400 50% 100%);
+    z-index: 2;
 }
 
 .square-bg {
@@ -65,8 +67,8 @@ body {
 
 .circle-card {
     position: absolute;
-    top: 820px;
-    left: 820px;
+    top: 800px;
+    left: 800px;
     width: 420px;
     height: 420px;
     background: #fff;
