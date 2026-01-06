@@ -66,35 +66,36 @@ body {
 }
 
 .circle-card {
-    position: absolute;
-    top: 800px;
-    left: 800px;
-    width: 420px;
-    height: 420px;
-    background: #fff;
-    border-radius: 20px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, .30);
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  position: absolute;
+  top: 800px;
+  left: 800px;
+  width: 420px;
+  height: 420px;
+  background: #fff;
+  border: 1px solid rgba(0,0,0,0.06);
+  border-radius: 20px;
+  box-shadow: 0 12px 24px rgba(0,0,0,0.18);
+  overflow: hidden; 
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .circle-shape {
     width: 340px;
-    height: 360px;
+    height: 340px; 
     border-radius: 50%;
-    background: linear-gradient(to bottom, #ffd400 50% 100%);
+    background: linear-gradient(to bottom, #1f3cff 0 50%,
+    #ffd400 50% 100%);
     position: relative;
 }
 
-
-.circle-glyph {
-    position: absolute;
-    width: 240px;
-    top: 60%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    display: block;
+.circle-glyph{
+  position: absolute;
+  width: 240px;
+  top: 58%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 img {
