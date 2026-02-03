@@ -49,8 +49,6 @@ header .container {
 nav a {
     display: inline-block;
     position: relative;
-    color: #000;
-    text-decoration: none;
     margin-right: 35px;
     font-size: 19px;
     font-weight: 400;
@@ -274,7 +272,7 @@ nav a:hover::after {
 }
 
 .client-image:nth-child(2) {
-    left: -10px;
+    margin-left: -10px;
 }
 
 .client-image:nth-child(3) {
