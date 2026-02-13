@@ -194,8 +194,8 @@ header .burger {
 .female,
 .male {
     position: relative;
-    width: 48%;            
-    height: 450px;          
+    width: 48%;
+    height: 450px;
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -387,6 +387,7 @@ footer h2 {
         position: relative;
         min-height: 650px;
         overflow: hidden;
+        margin-bottom: 50px;
     }
 
     .title-shop {
@@ -460,21 +461,20 @@ footer h2 {
 
     .female,
     .male {
-        width: 90%;
+        width: 99%;
         height: auto;
         min-height: 300px;
     }
 
     .female h2,
     .male h2 {
-        font-size: 20px;
-        top: 10px;
+        font-size: 38px;
+        top: -25px;
         left: 10px;
     }
 
     .female a,
     .male a {
-        font-size: 14px;
         bottom: 10px;
         left: 10px;
         right: 10px;
