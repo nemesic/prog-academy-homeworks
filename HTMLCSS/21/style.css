@@ -10,6 +10,8 @@
 
 body {
     font-family: "Philosopher", sans-serif;
+    margin: 0;
+    padding: 0;
 }
 
 .container {
@@ -63,6 +65,7 @@ body {
     font-size: 24px;
     text-align: center;
     color: #FFFFFF;
+    text-decoration: none;
 }
 
 .header-block nav a:hover {
@@ -117,11 +120,7 @@ body {
 }
 
 .grid-container-1 {
-    margin: 0 auto;
     display: grid;
-    grid-auto-rows: auto;
-    align-items: center;
-    gap: 29px 66px;
     grid-template-columns: 1fr;
     grid-template-areas:
         "box1"
@@ -132,6 +131,9 @@ body {
         "box6"
         "box7"
         "box8";
+    gap: 29px 66px;
+    align-items: center;
+    margin: 0 auto;
 }
 
 .title-story {
@@ -172,7 +174,6 @@ body {
     text-align: end;
     padding-top: 17px;
     padding-bottom: 60px;
-
 }
 
 .read-more::after {
@@ -183,7 +184,6 @@ body {
     height: 3px;
     top: 40px;
     right: -5px;
-
 }
 
 .discription-collection h3 {
@@ -708,3 +708,20 @@ footer {
         flex-wrap: wrap;
     }
 }
+
+/* GRID */
+.box1 { grid-area: box1; }
+.box2 { grid-area: box2; }
+.box3 { grid-area: box3; }
+.box4 { grid-area: box4; }
+.box5 { grid-area: box5; }
+.box6 { grid-area: box6; }
+.box7 { grid-area: box7; }
+.box8 { grid-area: box8; }
+
+/* GRID- Info*/
+.col2 { grid-area: box2; }
+.col3 { grid-area: box3; }
+.col4 { grid-area: box4; }
+.col5 { grid-area: box5; }
+.col6 { grid-area: box6; }
