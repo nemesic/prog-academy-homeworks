@@ -11,9 +11,9 @@ body {
 }
 
 .container {
-  max-width: 90rem;
+  max-width: 1440px;
   margin: 0 auto;
-  padding: 0 7.5rem;
+  padding: 0 2rem;
   position: relative;
 }
 
@@ -65,8 +65,8 @@ nav {
 }
 
 .main-content {
-  max-width: 50%;
-  padding: 9rem 4rem 2rem 0;
+  max-width: 600px;
+  padding: 9rem 1rem 2rem 0;
 }
 
 .main-content h1 {
@@ -86,7 +86,8 @@ nav {
   background: url("../img/bg.png") no-repeat center/cover;
   position: absolute;
   top: 10rem;
-  right: -3rem;
+  right: 0;
+  max-width: 50%;
   z-index: -1;
 }
 
@@ -146,9 +147,9 @@ footer i {
   margin-top: 1rem;
 }
 
-@media (max-width: 1024px) {
+@media (max-width: 1400px) and (max-width: 1600px) {
   .container {
-    padding: 0 2rem;
+    padding: 0 4rem;
   }
 
   .main-content {
