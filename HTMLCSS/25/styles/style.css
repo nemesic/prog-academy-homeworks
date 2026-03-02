@@ -1,0 +1,212 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Shadows+Into+Light&family=Shadows+Into+Light+Two&display=swap');
+
+body {
+    font-family: "Shadows Into Light", cursive;
+    font-weight: 400;
+    font-style: normal;
+    margin: 0;
+    padding: 0;
+}
+
+.top-bg-section {
+    background-image: url(../img/coffee.png);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    overflow: hidden;
+    min-height: 50vh;
+    padding: 80px 0;
+}
+
+.top-bg-section h1 {
+    color: #FFF;
+    text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.70);
+    font-family: "Shadows Into Light", cursive;
+    font-size: 6rem;
+    font-weight: 400;
+    line-height: 1.1;
+    text-align: center;
+}
+
+header {
+    background-color: #668E68;
+    font-family: "Montserrat", sans-serif;
+}
+
+.nav-link {
+    font-size: 18px;
+    line-height: 28.84px;
+}
+
+.nav-link:hover {
+    color: #c9c9c9;
+}
+
+.div-items-color {
+    border: 9px solid #81613B;
+}
+
+.div-text-absolut {
+    background-color: #FFFFFFCC;
+}
+
+.div-text-absolut span {
+    font-family: sans-serif;
+    font-size: 26px;
+    font-weight: 500;
+    line-height: 29.54px;
+}
+
+.bg-button {
+    background-color: #668E68;
+    width: 160px;
+    height: 40px;
+    position: relative;
+}
+
+.about {
+    font-family: sans-serif;
+    background-image: url(../img/cafe1.png);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    padding: 120px 0;
+    min-height: 50vh;
+}
+
+.about-block {
+    max-width: 387px;
+    margin: 0 auto;
+}
+
+.about-title {
+    color: #FFF;
+    text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.70);
+    font-family: "Shadows Into Light", cursive;
+    font-size: 40px;
+    font-weight: 400;
+}
+
+.about-subtitle {
+    text-shadow: 2px 2px 2px #000000B2;
+    font-family: sans-serif;
+    font-size: 20px;
+    font-weight: 500;
+    color: #FFFFFF;
+}
+
+.news {
+    background-color: #81613B33;
+    padding: 80px 0;
+}
+
+.title, .subtitle {
+    font-family: "Shadows Into Light", cursive;
+}
+
+.title {
+    font-size: 50px;
+    font-weight: 400;
+}
+
+.subtitle {
+    font-size: 30px;
+    font-weight: 400;
+}
+
+.news-block {
+    border: 2px solid #668E68;
+    max-width: 1109px;        
+    min-height: 102px;        
+    font-family: sans-serif;
+    font-weight: 600;
+    font-size: 26px;
+    line-height: 30px;
+    padding: 20px;             
+    gap: 10px;                  
+    margin: 0 auto;                
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.news-item {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+.news-date {
+    flex: 0 0 auto;
+    font-weight: 700;
+}
+.news-text {
+    flex: 1 1 auto;
+}
+
+footer, .footer-link {
+    font-family: sans-serif;
+    color: #FFF;
+}
+
+.button-to-top {
+    width: 40px;
+    height: 40px;
+    background-color: #668E68;
+    bottom: 21px;
+    right: 21px;
+    border: none;
+    opacity: 0.9;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    border-radius: 50%;
+}
+
+.navbar-toggler {
+    border: none;
+}
+
+.navbar-toggler-icon {
+    filter: invert(1);
+}
+
+.menu-circle {
+    max-width: 350px;
+}
+
+.img-fluid {
+    max-width: 100%;
+    height: auto;
+}
+
+.div-text-end {
+    text-align: right;
+}
+
+@media (max-width: 768px) {
+    .top-bg-section h1 {
+        font-size: 3.5rem;
+    }
+    .title {
+        font-size: 35px;
+    }
+    .subtitle {
+        font-size: 22px;
+    }
+    .menu-circle {
+        max-width: 300px;
+    }
+    .div-text-end {
+        margin-top: 20px;
+        text-align: center;
+    }
+    .about {
+        padding: 80px 0;
+    }
+    .about-title {
+        font-size: 32px;
+    }
+    .about-subtitle {
+        font-size: 18px;
+    }
+}
