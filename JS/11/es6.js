@@ -19,6 +19,7 @@ RestArr('Hello', 1, 2, 3, 'Test');
 console.log('===2===');
 
 function average(...numbers) {
+    if (numbers.length === 0) return 0;
     let sum = 0;
     for(let num of numbers) {
         sum += num;
@@ -26,6 +27,7 @@ function average(...numbers) {
     return sum / numbers.length;
 }
 
+console.log(average()); 
 console.log(average(5, 10, 15));
 console.log(average(2, 4, 6, 8));
 
