@@ -1,0 +1,12 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 20px;
+    background-color: #f4f6f8;
+}
+
+header{
+    display: flex;   
+    justify-content: center;
+    gap: 20px;
+}
