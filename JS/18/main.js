@@ -50,6 +50,12 @@ const sizeRadios = document.querySelectorAll('#pizzaForm input[name="size"]');
 const toppingCheckboxes = document.querySelectorAll('#pizzaForm input[type="checkbox"]');
 const pizzaPrice = document.getElementById('pizzaPrice');
 
+const pizzaPrices = {
+    "Маргарита": 120,
+    "Пепероні": 140,
+    "Чотири сири": 160
+};
+
 const sizePrices = {
     "Маленька": 50,
     "Середня": 100,
@@ -58,6 +64,9 @@ const sizePrices = {
 
 function calculatePizzaPrice() {
     let price = 0;
+
+    const pizzaType = pizzaSelect.value;
+    price += pizzaPrices[pizzaType];
 
     const selectedSize = Array.from(sizeRadios).find(r => r.checked);
     if(selectedSize) price += sizePrices[selectedSize.value];
