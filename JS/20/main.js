@@ -63,23 +63,28 @@ window.onload = function(){
     }
 
     startBtn.onclick = function(){
-        clearInterval(interval);
+        if(interval) return;
         interval = setInterval(()=>{
             if(timeLeft>0){
                 timeLeft--;
                 updateDisplay();
             } else {
                 clearInterval(interval);
+                interval = null;
                 alert("Час вийшов!");
+                timeLeft = TOTAL_TIME;
+                updateDisplay();
             }
+            
         },1000);
     };
 
     resetBtn.onclick = function(){
         clearInterval(interval);
+        interval = null;
         timeLeft = TOTAL_TIME;
         updateDisplay();
     };
 
     updateDisplay();
-};
+}
