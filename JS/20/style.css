@@ -1,0 +1,99 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f6f8;
+    color: #333;
+    margin: 0;
+    padding: 20px;
+    text-align: center;
+}
+
+h2 {
+    color: #444;
+    margin-bottom: 15px;
+}
+
+button {
+    padding: 10px 20px;
+    margin: 10px;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+button:hover {
+    background-color: #007bff;
+}
+
+p {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+:root {
+    --color1: #ff6b6b;
+    --color2: #feca57;
+    --color3: #48dbfb;
+    --color4: #1dd1a1;
+    --color5: #5f27cd;
+}
+
+#pomodoroContainer {
+    width: 250px;
+    height: 300px;
+    margin: 40px auto;
+    position: relative;
+    background-color: #1e1e1e;
+    border-radius: 20px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.5);
+    padding: 20px;
+}
+
+.progress-ring {
+    transform: rotate(-90deg);
+}
+
+.progress-ring__circle {
+    fill: transparent;
+    stroke-width: 8;
+    stroke: #FFA500;
+    transition: stroke-dashoffset 1s linear, stroke 1s linear;
+    transform: rotate(0.25turn);
+    transform-origin: 50% 50%;
+}
+
+#timerDisplay {
+    position: absolute;
+    top: 37%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 36px;
+    font-weight: bold;
+    color: white;
+}
+
+.buttons {
+    margin-top: 20px;
+}
+
+.startBtn {
+    background-color: #ffa500;
+    color: black;
+}
+
+.resetBtn {
+    background-color: transparent;
+    border: 2px solid white;
+    color: white;
+}
+
+.startBtn:hover {
+    background-color: #ff8c00;
+}
+
+.resetBtn:hover {
+    background-color: white;
+    color: black;
+}
