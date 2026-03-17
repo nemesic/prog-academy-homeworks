@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="container">
+
+        <section class="card">
+            <h2>sessionStorage</h2>
+            <input type="text" id="userInput" placeholder="Введіть текст">
+            <div class="row">
+                <button id="saveBtn">Зберегти</button>
+                <button id="showBtn">Показати</button>
+            </div>
+            <p id="output"></p>
+        </section>
+
+        <section class="card">
+            <h2>Налаштування</h2>
+            <label>Колір фону:</label>
+            <input type="color" id="colorPicker">
+
+            <label>
+                <input type="checkbox" id="darkMode"> Темна тема
+            </label>
+
+            <button id="saveSettings">Зберегти</button>
+        </section>
+
+        <section class="card">
+            <h2>To-Do List</h2>
+            <input type="text" id="todoInput" placeholder="Нове завдання">
+            <button id="addTodo">Додати</button>
+            <ul id="todoList"></ul>
+        </section>
+
+        <section class="card">
+            <h2>JSON</h2>
+            <button id="downloadJson">Завантажити JSON</button>
+        </section>
+
+    </div>
+
+    <script src="main.js"></script>
+</body>
+
+</html>

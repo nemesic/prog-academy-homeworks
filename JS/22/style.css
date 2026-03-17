@@ -1,0 +1,62 @@
+:root {
+    --bg: #f4f6f8;
+    --text: #222;
+    --card: white;
+    --btn: #007bff;
+    --btnHover: #0056b3;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    transition: 0.3s;
+}
+
+.container {
+    max-width: 600px;
+    margin: auto;
+    padding: 20px;
+}
+
+h1 {
+    text-align: center;
+}
+
+.card {
+    background: var(--card);
+    padding: 20px;
+    margin: 15px 0;
+    border-radius: 12px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+input {
+    width: calc(100% - 20px);
+    padding: 10px;
+    margin: 5px 0;
+}
+
+button {
+    padding: 10px;
+    margin: 5px 0;
+    width: 100%;
+    border: none;
+    border-radius: 6px;
+    background: var(--btn);
+    color: white;
+    cursor: pointer;
+    font-weight: bold;
+    transition: 0.2s;
+}
+
+button:hover {
+    background: var(--btnHover);
+}
+
+p {
+    margin-top: 10px;
+    font-weight: bold;
+    min-height: 24px;
+}

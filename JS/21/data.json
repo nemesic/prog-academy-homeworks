@@ -1,0 +1,10 @@
+{
+  "name": "Oleksii",
+  "age": 20,
+  "skills": ["HTML", "CSS", "JavaScript"],
+  "address": {
+    "city": "Kalush",
+    "country": "Ukraine"
+  },
+  "active": true
+}
