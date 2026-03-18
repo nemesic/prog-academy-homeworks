@@ -9,6 +9,18 @@ const randomUserBtn = document.getElementById('randomUserBtn');
 const randomFilmBtn = document.getElementById('randomFilmBtn');
 const randomPlanetBtn = document.getElementById('randomPlanetBtn');
 
+async function getValidPlanet(maxAttempts = 10) {
+    for (let i = 0; i < maxAttempts; i++) {
+        const id = Math.floor(Math.random()*60) + 1;
+        const res = await fetch(`https://swapi.dev/api/planets/${id}/`);
+
+        if (res.ok) {
+            return await res.json();
+        }
+        throw new Error('Не вдалося знайти планету');
+    }
+}
+
 //1
 randomUserBtn.onclick = async () => {
     userCard.innerHTML = 'Завантаження...';
@@ -26,7 +38,7 @@ randomUserBtn.onclick = async () => {
             <p><b>Компанія:</b> ${user.company.name}</p>
         `;
     } catch(err){
-        userCard.innerHTML = `Помилка: ${err}`;
+        userCard.innerHTML = `Помилка: ${err.message}`;
     }
 };
 
@@ -45,7 +57,7 @@ randomFilmBtn.onclick = async () => {
             <p><b>Продюсери:</b> ${film.producer}</p>
         `;
     } catch(err){
-        filmCard.innerHTML = `Помилка: ${err}`;
+        filmCard.innerHTML = `Помилка: ${err.message}`;
     }
 };
 
@@ -53,10 +65,7 @@ randomFilmBtn.onclick = async () => {
 randomPlanetBtn.onclick = async () => {
     planetCard.innerHTML = 'Завантаження...';
     try {
-        const id = Math.floor(Math.random()*60) + 1;
-        const res = await fetch(`https://swapi.dev/api/planets/${id}/`);
-        if(!res.ok) throw new Error('Планету не знайдено');
-        const planet = await res.json();
+        const planet = await getValidPlanet();
 
         const residents = planet.residents.length
             ? planet.residents.map(url => `<a href="${url}" target="_blank">${url}</a>`).join(', ')
@@ -73,7 +82,7 @@ randomPlanetBtn.onclick = async () => {
             <p><b>Фільми:</b> ${films}</p>
         `;
     } catch(err){
-        planetCard.innerHTML = `Помилка: ${err}`;
+        planetCard.innerHTML = `Помилка: ${err.message}`;
     }
 };
 
