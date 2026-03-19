@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<h2>Canvas</h2>
+<canvas id="myCanvas" width="700" height="350"></canvas>
+
+<div class="buttons">
+    <button onclick="fillCanvasGradient('#0f172a','#38bdf8')">Градієнт</button>
+    <button onclick="drawLine(0,0,700,350,'white',3)">Лінія</button>
+</div>
+
+<hr>
+
+<h2>SVG Динаміка</h2>
+
+<div class="buttons">
+    <button onclick="createSvgLine(20,20,400,120,'red',4)">SVG Лінія</button>
+    <button onclick="createSvgRect(200,120,'yellow','black',3)">SVG Прямокутник</button>
+</div>
+
+<div id="svgContainer"></div>
+
+<script src="main.js"></script>
+</body>
+</html>
