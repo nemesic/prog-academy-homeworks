@@ -15,6 +15,53 @@ body {
   overflow-x: hidden;
 }
 
+.header-search {
+  width: 220px;
+  padding: 10px 14px;
+  margin-left: 15px;
+
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+
+  background: --var(--color-dark, rgba(30, 30, 30, 0.75));
+  color: #fff;
+
+  font-size: 14px;
+  outline: none;
+
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+
+  transition: all 0.3s ease;
+}
+
+.header-search:focus {
+  border-color: #e50914;
+  box-shadow: 0 0 10px rgba(229, 9, 20, 0.6);
+  transform: scale(1.05);
+}
+
+.header-search {
+  animation: fadeInSearch 0.25s ease;
+}
+
+@keyframes fadeInSearch {
+  from {
+    opacity: 0;
+    transform: translateX(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
 img {
   width: 100%;
   object-fit: cover;
