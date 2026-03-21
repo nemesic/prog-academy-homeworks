@@ -1,0 +1,72 @@
+body {
+  margin: 0;
+  font-family: Arial;
+  transition: 0.3s;
+}
+
+body.dark {
+  background: #0f172a;
+  color: white;
+}
+
+body.light {
+  background: #f1f5f9;
+  color: #0f172a;
+}
+
+.container {
+  max-width: 500px;
+  margin: 50px auto;
+  padding: 20px;
+  border-radius: 16px;
+  background: rgba(255,255,255,0.05);
+  backdrop-filter: blur(10px);
+}
+
+.top {
+  display: flex;
+  gap: 10px;
+}
+
+input {
+  flex: 1;
+  padding: 10px;
+  border-radius: 10px;
+  border: none;
+}
+
+button {
+  padding: 10px;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  background: #3b82f6;
+  color: white;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+  margin-top: 20px;
+}
+
+li {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+  margin-top: 8px;
+  background: rgba(255,255,255,0.1);
+  border-radius: 10px;
+}
+
+.done span {
+  text-decoration: line-through;
+  opacity: 0.5;
+}
+
+.filters {
+  display: flex;
+  gap: 5px;
+  margin: 10px 0;
+}
+
