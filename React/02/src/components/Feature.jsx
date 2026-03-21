@@ -1,14 +1,17 @@
 import playIcon from "../assets/img/play-icon.png";
+import { useState } from "react";
 
 function Feature({ title, description}) {
+const genres = ["Drama", "Thriller", "Supernatural"];
+const maxRating = 5;
+const [rating, setRating] = useState(3);
+
   return (
     <main className="feature-section">
       <div className="content-wrapper">
         <div className="tags-list">
-          <span>Drama</span>
-          <span>Thriller</span>
-          <span>Supernatural</span>
-        </div>
+           {genres.map((genre) => (<span key={genre}>{genre}</span>))}
+        </div>  
 
         <h1 className="feature-title">{title}</h1>
 
@@ -27,22 +30,29 @@ function Feature({ title, description}) {
             {description}
           </p>
         </div>
-
+        
         <div className="stars-rating">
-          <i className="fa-solid fa-star"></i>
-          <i className="fa-solid fa-star"></i>
-          <i className="fa-solid fa-star"></i>
-          <i className="fa-regular fa-star"></i>
-          <i className="fa-regular fa-star"></i>
-        </div>
+          {Array.from({ length: maxRating }, (_, index) => (
+            <i 
+            key={index} 
+            onClick={() => setRating(index + 1)}
+            className={
+            index < rating
+          ? "fa-solid fa-star"
+          : "fa-regular fa-star"
+        }
+        ></i>
+      ))
+    }
+</div>
 
         <div className="control-buttons">
-          <button className="start-stream">
+          <button className="start-stream" onClick={() => alert("Streaming started")}>
             STREAM NOW
-            <img src={playIcon} alt="play" />
+          <img src={playIcon} alt="play" />
           </button>
 
-          <button className="episodes-list">ALL EPISODES</button>
+          <button className="episodes-list"onClick={() => alert("All episodes")}> ALL EPISODES</button>
         </div>
       </div>
     </main>

@@ -1,7 +1,13 @@
 import PropTypes from "prop-types";
 
 function MovieCard({ img, title }) {
-  return <img src={img} alt={title} />;
+  return (
+      <img
+      src={img}
+      alt={title}
+      onClick={() => alert(title)}
+    />
+  );
 }
 
 MovieCard.propTypes = {

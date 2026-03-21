@@ -297,13 +297,18 @@ button>* {
 .shows-row {
   width: 100%;
   margin-bottom: 49px;
+  overflow-x: auto !important;
+  display: flex; 
+  scroll-behavior: smooth;
 }
 
 .shows-row img {
+  flex-shrink: 0;
   width: 151px;
   height: 210px;
-  margin-right: 50px;
+  margin-right: 80px;
   border: 1px solid #ffffff;
+  min-width: 150px;
 }
 
 .shows-row img:last-child {
@@ -329,6 +334,17 @@ button>* {
   padding-right: 30px;
   font-size: 24px;
   font-weight: 500;
+}
+
+.shows-row {
+  display: flex;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  gap: 0px;
+}
+
+.shows-row::-webkit-scrollbar {
+  display: none;
 }
 
 @media (max-width: 768px) {
@@ -424,7 +440,7 @@ button>* {
   .shows-row {
     display: flex;
     overflow-x: auto;
-    gap: 16px;
+    gap: 10px;
   }
 
   .shows-row img {
@@ -441,4 +457,16 @@ button>* {
     line-height: 50px;
     bottom: 20px;
   }
+
+  .shows-row {
+  display: flex;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  gap: 10px;
+}
+
+.shows-row::-webkit-scrollbar {
+  display: none;
+}
+
 }
