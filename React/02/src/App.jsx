@@ -8,7 +8,7 @@ function App() {
   return (
     <>
       <Header />
-      <Feature />
+      <Feature title="Stranger Things" description="Stranger Things is an American science fiction horror drama streaming television series created by The Duffer Brothers for Apple TV+. The series premiered on June 16, 2019, and is based on the 2016 novel of the same name by the Duffer Brothers." />
       <Popular />
       <RatingBox />
     </>

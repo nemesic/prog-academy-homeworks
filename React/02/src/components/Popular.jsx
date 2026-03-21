@@ -1,8 +1,5 @@
-import img1 from "../assets/img/breaking-bad.jpg";
-import img2 from "../assets/img/the-rain.jpg";
-import img3 from "../assets/img/life-in-a-year.jpg";
-import img4 from "../assets/img/money-heist-korea.jpg";
-import img5 from "../assets/img/squid-game.jpg";
+import { movies } from "../data/movies";
+import MovieCard from "./MovieCard";
 
 function Popular() {
   return (
@@ -22,11 +19,15 @@ function Popular() {
         </div>
 
         <div className="shows-row">
-          <img src={img1} alt="Breaking Bad" />
-          <img src={img2} alt="The Rain" />
-          <img src={img3} alt="Life in a Year" />
-          <img src={img4} alt="Money Heist Korea" />
-          <img src={img5} alt="Squid Game" />
+          {
+          movies.map((movie) => (
+            <MovieCard
+              key={movie.id}
+              img={movie.img}
+              title={movie.title}
+            />
+          ))
+          }
         </div>
       </div>
     </section>

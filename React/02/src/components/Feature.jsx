@@ -1,6 +1,6 @@
 import playIcon from "../assets/img/play-icon.png";
 
-function Feature() {
+function Feature({ title, description}) {
   return (
     <main className="feature-section">
       <div className="content-wrapper">
@@ -10,7 +10,7 @@ function Feature() {
           <span>Supernatural</span>
         </div>
 
-        <h1 className="feature-title">Stranger Things</h1>
+        <h1 className="feature-title">{title}</h1>
 
         <div className="details-row">
           <span>2019</span>
@@ -24,8 +24,7 @@ function Feature() {
 
         <div className="story-summary">
           <p>
-            In 1980s Indiana, a group of young friends witness supernatural forces and
-            secret government exploits...
+            {description}
           </p>
         </div>
 
