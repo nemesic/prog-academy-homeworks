@@ -11,6 +11,9 @@
   "license": "ISC",
   "type": "commonjs",
   "devDependencies": {
-    "gulp": "^5.0.1"
+    "gulp": "^5.0.1",
+    "gulp-clean-css": "^4.3.0",
+    "webpack": "^5.105.4",
+    "webpack-cli": "^7.0.2"
   }
 }

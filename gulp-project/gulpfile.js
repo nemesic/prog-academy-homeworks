@@ -1,8 +1,8 @@
-const { task } = require('gulp');
+const gulp = require('gulp');
+const cleanCSS = require('gulp-clean-css');
 
-function testTask(done) {
-    console.log('hello test');
-    done();
-}
-
-exports.test = testTask;
+gulp.task('styles', function () {
+  return gulp.src('src/css/*.css')
+    .pipe(cleanCSS())
+    .pipe(gulp.dest('dist/css'));
+});
