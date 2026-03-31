@@ -1,21 +1,27 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useMemo } from "react";
 import MovieCard from "./MovieCard";
 
 function Popular({ search = "" , onSelectMovie}) {
 const rowRef = useRef(null);
 
 const [apiMovies, setApiMovies] = useState([]);
+const [page, setPage] = useState(1);
+const [loading, setLoading] = useState(false);
+
 const API_KEY = "9eee1c8a9ca4c5306eb86111905631a1";
 
  useEffect(() => {
+    let ignore = false;
     const fetchData = async () => {
+      setLoading(true);
+
       try {
         const [moviesRes, seriesRes] = await Promise.all([
           fetch(
-            `https://api.themoviedb.org/3/movie/popular?api_key=${API_KEY}&language=en-US&page=1`
+            `https://api.themoviedb.org/3/movie/popular?api_key=${API_KEY}&language=en-US&page=${page}`
           ),
           fetch(
-            `https://api.themoviedb.org/3/tv/popular?api_key=${API_KEY}&language=en-US&page=1`
+            `https://api.themoviedb.org/3/tv/popular?api_key=${API_KEY}&language=en-US&page=${page}`
           ),
         ]);
 
@@ -36,18 +42,34 @@ const API_KEY = "9eee1c8a9ca4c5306eb86111905631a1";
           raw: item,
         }));
 
-        setApiMovies(formatted);
+        if (!ignore) {
+        setApiMovies((prev) => {
+          const ids = new Set(prev.map((m) => m.id));
+          const newItems = formatted.filter((m) => !ids.has(m.id));
+          return [...prev, ...newItems];
+        });
+      }
+
       } catch (error) {
         console.log("TMDB error:", error);
+      } finally {
+        if (!ignore) setLoading(false);
       }
     };
 
     fetchData();
-  }, []);
+    return () => {
+    ignore = true; 
+  };
+}, [page]);
 
-const filteredMovies = apiMovies.filter((movie) =>
-  movie.title.toLowerCase().includes(search.toLowerCase()));
-  
+
+const filteredMovies = useMemo(() => {
+  return apiMovies.filter((movie) =>
+    movie.title.toLowerCase().includes(search.toLowerCase())
+  );
+}, [apiMovies, search]);
+
 const scrollLeft = () => {
   rowRef.current?.scrollBy({ left: -300, behavior: "smooth" });
 };
@@ -55,6 +77,10 @@ const scrollLeft = () => {
 const scrollRight = () => {
   rowRef.current?.scrollBy({ left: 300, behavior: "smooth" });
 };
+
+  const loadMore = () => {
+    setPage((prev) => prev + 1);
+  };
 
 return (
     <section className="popular-section">
@@ -73,9 +99,9 @@ return (
             </button>
           </div>
         </div>
-        
+
         <div className="shows-row" ref={rowRef}>
-          {filteredMovies.length === 0 && <p>Loading...</p>}
+          {loading && <p>Loading...</p>}
 
           {filteredMovies.map((movie) => (
             <MovieCard 
@@ -87,7 +113,12 @@ return (
             />
           ))}
         </div>
-
+        <div style={{ textAlign: "center", marginTop: "20px" }}>
+          <button className="load-more-btn" onClick={loadMore} disabled={loading}>
+            {loading && <span className="spinner"></span>}
+            {loading ? "Loading..." : "Load More"}
+            </button>
+        </div>
       </div>
     </section>
   );
