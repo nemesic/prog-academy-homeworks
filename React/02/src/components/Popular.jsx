@@ -1,16 +1,18 @@
 import { useRef } from "react";
-import { movies } from "../data/movies";
 import MovieCard from "./MovieCard";
 
-function Popular({ search }) {
+function Popular({ movies = [], search = "" }) {
 const rowRef = useRef(null);
+
+const filteredMovies = movies.filter((movie) =>
+  movie.title.toLowerCase().includes(search.toLowerCase()));
   
 const scrollLeft = () => {
-  rowRef.current.scrollBy({ left: -300, behavior: "smooth" });
+  rowRef.current?.scrollBy({ left: -300, behavior: "smooth" });
 };
 
 const scrollRight = () => {
-  rowRef.current.scrollBy({ left: 300, behavior: "smooth" });
+  rowRef.current?.scrollBy({ left: 300, behavior: "smooth" });
 };
 
 return (
@@ -32,21 +34,20 @@ return (
         </div>
         
         <div className="shows-row" ref={rowRef}>
-          {
-          movies.filter((movie) =>
-          movie.title.toLowerCase().includes(search.toLowerCase())
-        ).map((movie) => ( 
-        <MovieCard
-      key={movie.id}
-      img={movie.img}
-      title={movie.title}
-    />
-  ))
-          } 
-        </div> 
-      </div> 
-  </section> 
-); 
+          {filteredMovies.length === 0 && <p>No movies found</p>}
+
+          {filteredMovies.map((movie) => (
+            <MovieCard 
+            key={movie.id}
+            img={movie.img}
+            title={movie.title}/>
+          ))}
+        </div>
+
+      </div>
+    </section>
+  );
 }
+
 
 export default Popular;

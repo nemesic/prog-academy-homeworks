@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 
-function MovieCard({ img, title }) {
+function MovieCard({ img, title}) {
   return (
       <img
       src={img}
@@ -9,6 +9,7 @@ function MovieCard({ img, title }) {
     />
   );
 }
+
 
 MovieCard.propTypes = {
   img: PropTypes.string.isRequired,
