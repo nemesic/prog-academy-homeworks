@@ -1,9 +1,17 @@
 import logo from "../assets/img/netflix-logo.png";
 import avatar from "../assets/img/avatar.png";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 
 function Header({ search, setSearch }) {
 const [searchOpen, setSearchOpen] = useState(false);
+
+const inputRef = useRef(null);
+
+useEffect(() => {
+  if (searchOpen) {
+    inputRef.current?.focus();
+  }
+}, [searchOpen]);
 
   return (
     <header className="main-header">
@@ -24,6 +32,7 @@ const [searchOpen, setSearchOpen] = useState(false);
         {
         searchOpen && ( 
         <input
+        ref={inputRef}
         type="text" 
         placeholder="Search movies..."
         value={search}
