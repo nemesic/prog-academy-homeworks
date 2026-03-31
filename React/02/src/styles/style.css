@@ -1,17 +1,17 @@
 :root {
   --bg: #141414;
-  --card: rgba(0, 0, 0, 0.7);
+  --card: rgba(0, 0, 0, 0.65);
   --text: #ffffff;
   --muted: #a7a6a6;
   --red: #e50914;
   --red-hover: #f40613;
-  --border: rgba(255, 255, 255, 0.2);
+  --border: rgba(255, 255, 255, 0.12);
 }
 
 * {
   box-sizing: border-box;
   margin: 0;
-  transition: all 0.3s ease;
+  padding: 0;
   scroll-behavior: smooth;
 }
 
@@ -23,12 +23,19 @@ body {
   font-family: 'Inter', sans-serif;
   font-weight: 500;
   color: #a7a6a6;
-  overflow-x: clip; 
+  overflow-x: hidden;
   background-attachment: fixed;
 }
 
 button {
   border-radius: 8px;
+  transition: all 0.25s ease;
+}
+
+button,
+img,
+i,
+.header-search {
   transition: all 0.25s ease;
 }
 
@@ -39,9 +46,9 @@ input, .header-search {
 
 .glass {
   background: rgba(0, 0, 0, 0.6);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(12px);
   border: 1px solid var(--border);
+  border-radius: 12px;
 }
 
 .glass-card {
@@ -103,18 +110,16 @@ button:hover,
 .header-search {
   width: 220px;
   padding: 10px 14px;
-  margin-left: 15px;
   border-radius: 8px;
   border: 1px solid var(--border);
-  background: rgba(0, 0, 0, 0.75);
-  color: var(--text);
+  background: rgba(0,0,0,0.7);
+  color: white;
   outline: none;
-  backdrop-filter: blur(10px);
 }
 
 .header-search:focus {
   border-color: var(--red);
-  box-shadow: 0 0 10px rgba(229, 9, 20, 0.6);
+  box-shadow: 0 0 12px rgba(229,9,20,0.4);
 }
 
 .header-search {
@@ -135,7 +140,7 @@ button:hover,
 .header-right {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 16px;
 }
 
 img {
@@ -184,7 +189,7 @@ header .content-wrapper {
 }
 
 .header-right i {
-  margin-right: 48px;
+  /* margin-right: 48px; */
   color: #ffffff;
 }
 
@@ -435,21 +440,17 @@ button>* {
   width: 150px;
   height: 210px;
   border-radius: 10px;
+  object-fit: cover;
   border: 1px solid var(--border);
-  transition: all 0.3s ease;
-  flex-shrink: 0;
-  transform-origin: center;
-  position: relative;
-  z-index: 1;
-  will-change: transform;
+  cursor: pointer;
+  transform: scale(1);
 }
 
 .shows-row img:hover {
-  transform: scale(1.06);
+  transform: scale(1.08);
   border-color: var(--red);
-  filter: brightness(0.85);
-  box-shadow: 0 12px 30px rgba(229, 9, 20, 0.3);
-  z-index: 20;
+  filter: brightness(0.8);
+  box-shadow: 0 10px 30px rgba(229,9,20,0.3);
 }
 
 .rating-box {
@@ -568,7 +569,39 @@ button>* {
     bottom: 20px;
   }
   
+    .favorites-dropdown {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 100%;
+    height: 100vh;
+    border-radius: 0;
+    padding: 20px;
+    background: rgba(0,0,0,0.98);
+    z-index: 999;
+    overflow-y: auto;
+  }
+
+  .favorite-item {
+    font-size: 16px;
+    padding: 14px 10px;
+  }
+
+  .heart-icon {
+    font-size: 26px;
+  }
+
+  .favorites-count {
+    width: 22px;
+    height: 22px;
+    font-size: 12px;
+  }
+
+  .favorites-wrapper {
+    position: static;
+  }
 }
+
 
 .range-box {
   margin: 40px;
@@ -660,4 +693,78 @@ button>* {
 .prev-value.down {
   color: #e74c3c;
   text-shadow: 0 0 10px rgba(229,9,20,0.4);
+}
+
+.movie-card {
+  cursor: pointer;
+}
+
+.favorites-wrapper {
+  position: relative;
+  margin-left: 15px;
+}
+
+.heart-icon {
+  color: var(--red);
+  cursor: pointer;
+  font-size: 32px;
+}
+
+.favorites-count {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  background: var(--red);
+  color: white;
+  font-size: 11px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.favorites-dropdown {
+  position: absolute;
+  right: 0;
+  top: 42px;
+  width: 240px;
+  background: rgba(10,10,10,0.95);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 12px;
+  z-index: 100;
+}
+
+.favorite-item {
+ display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 12px;
+  border-bottom: 2px solid rgba(255,255,255,0.06);
+  font-size: 13px;
+}
+
+.favorite-item:hover {
+  background: rgba(255,255,255,0.03);
+}
+
+.shows-row div {
+  position: relative;
+}
+
+.shows-row i.fa-heart {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  color: var(--red);
+  opacity: 0;
+  transform: scale(0.8);
+}
+
+.shows-row div:hover i.fa-heart {
+  opacity: 1;
+  transform: scale(1);
 }

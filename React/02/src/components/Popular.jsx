@@ -1,7 +1,7 @@
 import { useRef } from "react";
 import MovieCard from "./MovieCard";
 
-function Popular({ movies = [], search = "", onSelectMovie}) {
+function Popular({ movies = [], search = "" , onSelectMovie}) {
 const rowRef = useRef(null);
 
 const filteredMovies = movies.filter((movie) =>
@@ -41,7 +41,8 @@ return (
             key={movie.id}
             img={movie.img}
             title={movie.title}
-            onClick={() => onSelectMovie(movie)}
+            movie={movie}
+            onSelect={onSelectMovie}
             />
           ))}
         </div>
