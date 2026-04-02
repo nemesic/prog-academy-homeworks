@@ -1,5 +1,6 @@
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { useState } from "react";
-import "./styles/style.css";
+import "./styles/fixstyle.css";
 import Header from "./components/Header";
 import Feature from "./components/Feature";
 import Popular from "./components/Popular";
@@ -7,19 +8,24 @@ import RatingBox from "./components/RatingBox";
 import CreateMovie from "./components/CreateMovie";
 import { movies as initialMovies } from "./data/movies";
 import RangeCompare from "./components/RangeCompare";
-import { FavoritesContext } from "./context/FavoritesContext";
+// import { FavoritesContext } from "./context/FavoritesContext";
 import { FavoritesProvider } from "./context/FavoritesProvider";
+import About from "./pages/About";
+import Price from "./pages/Price";
+import Contact from "./pages/Contact";
 
-function App() {
-  const [value, setValue] = useState(0);
+
+function Home({ search  }) {
+  // const [value, setValue] = useState(0);
   const [movies, setMovies] = useState(initialMovies);
-  const [search, setSearch] = useState("");
+  const [apiMovies, setApiMovies] = useState([]);
+  // const [search, setSearch] = useState("");
 
   const [selectedMovie, setSelectedMovie] = useState(null);
   const [prevSelected, setPrevSelected] = useState(null);
 
   const addMovie = (newMovie) => {
-    setMovies([...movies, newMovie]);
+    setMovies((prev) => [...prev, newMovie]);
   };
 
   const handleSelectMovie = (movie) => {
@@ -28,23 +34,24 @@ function App() {
   };
 
   return (
-    <FavoritesProvider value={{ value, setValue }}>
-      <Header search={search} setSearch={setSearch} />
+    <>
+    {/* <FavoritesProvider value={{ value, setValue }}>
+     <Header search={search} setSearch={setSearch} /> */}
 
       <Feature
         title="Stranger Things"
         description="Stranger Things is an American science fiction horror drama..."
       />
 
-      <CreateMovie onAddMovie={addMovie} />
-
       <Popular
-        movies={movies}
+        movies={[...movies, ...apiMovies]}
+        setApiMovies={setApiMovies}     
         search={search}
         onSelectMovie={handleSelectMovie}
       />
 
       <RatingBox />
+      <CreateMovie onAddMovie={addMovie} />
       <RangeCompare />
 
       {selectedMovie && (
@@ -60,8 +67,30 @@ function App() {
           <div className="movie-pill">
             {prevSelected ? prevSelected.title : "None"}
           </div>
-        </div>
+        </div>  
       )}
+    </>
+  );
+}
+
+function App() {
+  const [search, setSearch] = useState("");
+
+  return (
+    <FavoritesProvider>
+      <BrowserRouter>
+        <Header search={search} setSearch={setSearch} />
+
+        <Routes>
+          <Route
+            path="/"
+            element={<Home search={search} setSearch={setSearch} />}
+          />
+          <Route path="/about" element={<About />} />
+          <Route path="/price" element={<Price />} />
+          <Route path="/contact" element={<Contact />} />
+        </Routes>
+      </BrowserRouter>
     </FavoritesProvider>
   );
 }

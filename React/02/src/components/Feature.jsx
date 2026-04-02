@@ -1,5 +1,8 @@
 import playIcon from "../assets/img/play-icon.png";
 import { useState } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faStar as faSolidStar } from "@fortawesome/free-solid-svg-icons";
+import { faStar as faRegularStar } from "@fortawesome/free-regular-svg-icons";
 
 function Feature({ title, description}) {
 const genres = ["Drama", "Thriller", "Supernatural"];
@@ -33,18 +36,15 @@ const [rating, setRating] = useState(3);
         
         <div className="stars-rating">
           {Array.from({ length: maxRating }, (_, index) => (
-            <i 
-            key={index} 
-            onClick={() => setRating(index + 1)}
-            className={
-            index < rating
-          ? "fa-solid fa-star"
-          : "fa-regular fa-star"
-        }
-        ></i>
-      ))
-    }
-</div>
+            <FontAwesomeIcon
+              key={index}
+              icon={index < rating ? faSolidStar : faRegularStar}
+              className="star-icon"
+              onClick={() => setRating(index + 1)}
+              style={{ cursor: "pointer" }}
+            />
+          ))}
+        </div>
 
         <div className="control-buttons">
           <button className="start-stream" onClick={() => alert("Streaming started")}>

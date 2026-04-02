@@ -1,12 +1,14 @@
-import { useEffect, useRef, useState, useMemo } from "react";
+import { useEffect, useState, useMemo } from "react";
 import MovieCard from "./MovieCard";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation, Autoplay } from "swiper/modules";
+import "swiper/css";
+import "swiper/css/navigation";
 
-function Popular({ search = "" , onSelectMovie}) {
-const rowRef = useRef(null);
-
-const [apiMovies, setApiMovies] = useState([]);
-const [page, setPage] = useState(1);
-const [loading, setLoading] = useState(false);
+function Popular({ search = "" ,  movies = [], setApiMovies, onSelectMovie }) {
+  const [page, setPage] = useState(1);
+  const [loading, setLoading] = useState(false);
+  const [swiperInstance, setSwiperInstance] = useState(null);
 
 const API_KEY = "9eee1c8a9ca4c5306eb86111905631a1";
 
@@ -61,68 +63,83 @@ const API_KEY = "9eee1c8a9ca4c5306eb86111905631a1";
     return () => {
     ignore = true; 
   };
-}, [page]);
+}, [page, setApiMovies]);
 
 
 const filteredMovies = useMemo(() => {
-  return apiMovies.filter((movie) =>
+  if (!search.trim()) return movies;
+
+  return movies.filter((movie) =>
     movie.title.toLowerCase().includes(search.toLowerCase())
   );
-}, [apiMovies, search]);
+}, [movies, search]);
 
 const scrollLeft = () => {
-  rowRef.current?.scrollBy({ left: -300, behavior: "smooth" });
+  swiperInstance?.slidePrev();
 };
 
 const scrollRight = () => {
-  rowRef.current?.scrollBy({ left: 300, behavior: "smooth" });
+  swiperInstance?.slideNext();
 };
 
-  const loadMore = () => {
-    setPage((prev) => prev + 1);
-  };
+const loadMore = () => {
+  setPage((prev) => prev + 1);
+};
 
 return (
-    <section className="popular-section">
-      <div className="content-wrapper">
-        <div className="popular-header">
-          <h4>POPULAR THIS WEEK</h4>
+  <section className="popular-section">
+    <div className="content-wrapper">
+      <div className="popular-header">
+        <h4>POPULAR THIS WEEK</h4>
 
-          <div className="navigation-arrows">
-            <button className="arrow-left" 
-            onClick={scrollLeft}>
-              <i className="fa-solid fa-chevron-left"></i>
-            </button>
-            <button className="arrow-right" 
-            onClick={scrollRight}>
-              <i className="fa-solid fa-chevron-right"></i>
-            </button>
-          </div>
-        </div>
-
-        <div className="shows-row" ref={rowRef}>
-          {loading && <p>Loading...</p>}
-
-          {filteredMovies.map((movie) => (
-            <MovieCard 
-            key={movie.id}
-            img={movie.img}
-            title={movie.title}
-            movie={movie}
-            onSelect={onSelectMovie}
-            />
-          ))}
-        </div>
-        <div style={{ textAlign: "center", marginTop: "20px" }}>
-          <button className="load-more-btn" onClick={loadMore} disabled={loading}>
-            {loading && <span className="spinner"></span>}
-            {loading ? "Loading..." : "Load More"}
-            </button>
+        <div className="navigation-arrows">
+          <button className="arrow-left" onClick={scrollLeft}>
+            <i className="fa-solid fa-chevron-left"></i>
+          </button>
+          <button className="arrow-right" onClick={scrollRight}>
+            <i className="fa-solid fa-chevron-right"></i>
+          </button>
         </div>
       </div>
-    </section>
-  );
-}
 
+      <Swiper
+        className="shows-row"
+        modules={[Navigation, Autoplay]}
+        onSwiper={setSwiperInstance}
+        spaceBetween={14}
+        slidesPerView={2.1}
+        navigation={false}
+        autoplay={{ delay: 3300, disableOnInteraction: false }}
+        breakpoints={{
+          320: { slidesPerView: 2 },
+          480: { slidesPerView: 2.5 },
+          640: { slidesPerView: 3.5 },
+          860: { slidesPerView: 4.5 },
+          1080: { slidesPerView: 5.5 },
+          1300: { slidesPerView: 6.5 },
+        }}
+      >
+        {filteredMovies.map((movie) => (
+          <SwiperSlide key={movie.id}>
+            <MovieCard
+              img={movie.img}
+              title={movie.title}
+              movie={movie}
+              onSelect={onSelectMovie}
+            />
+          </SwiperSlide>
+        ))}
+      </Swiper>
+
+      <div style={{ textAlign: "center", marginTop: "20px" }}>
+        <button className="load-more-btn" onClick={loadMore} disabled={loading}>
+          {loading && <span className="spinner"></span>}
+          {loading ? "Loading..." : "Load More"}
+        </button>
+      </div>
+    </div>
+  </section>
+);
+}
 
 export default Popular;

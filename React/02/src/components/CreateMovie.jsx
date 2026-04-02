@@ -11,7 +11,7 @@ function CreateMovie({ onAddMovie }) {
     if (!title || !img) return;
 
     const newMovie = {
-      id: Date.now(),
+       id: "custom-" + Date.now(),
       title,
       img,
     };
