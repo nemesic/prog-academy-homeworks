@@ -5,7 +5,6 @@ import Header from "./components/Header";
 import Feature from "./components/Feature";
 import Popular from "./components/Popular";
 import RatingBox from "./components/RatingBox";
-import CreateMovie from "./components/CreateMovie";
 import { movies as initialMovies } from "./data/movies";
 import RangeCompare from "./components/RangeCompare";
 // import { FavoritesContext } from "./context/FavoritesContext";
@@ -13,20 +12,17 @@ import { FavoritesProvider } from "./context/FavoritesProvider";
 import About from "./pages/About";
 import Price from "./pages/Price";
 import Contact from "./pages/Contact";
+import Admin from "./pages/Admin";
 
 
 function Home({ search  }) {
   // const [value, setValue] = useState(0);
-  const [movies, setMovies] = useState(initialMovies);
+  const [movies] = useState(initialMovies);
   const [apiMovies, setApiMovies] = useState([]);
   // const [search, setSearch] = useState("");
 
   const [selectedMovie, setSelectedMovie] = useState(null);
   const [prevSelected, setPrevSelected] = useState(null);
-
-  const addMovie = (newMovie) => {
-    setMovies((prev) => [...prev, newMovie]);
-  };
 
   const handleSelectMovie = (movie) => {
     setPrevSelected(selectedMovie);
@@ -51,7 +47,6 @@ function Home({ search  }) {
       />
 
       <RatingBox />
-      <CreateMovie onAddMovie={addMovie} />
       <RangeCompare />
 
       {selectedMovie && (
@@ -89,6 +84,7 @@ function App() {
           <Route path="/about" element={<About />} />
           <Route path="/price" element={<Price />} />
           <Route path="/contact" element={<Contact />} />
+          <Route path="/admin" element={<Admin />} />
         </Routes>
       </BrowserRouter>
     </FavoritesProvider>

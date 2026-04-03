@@ -54,6 +54,7 @@ function Header({ search, setSearch }) {
           <Link to="/about">ABOUT</Link>
           <Link to="/price">PRICE</Link>
           <Link to="/contact">CONTACT</Link>
+          <Link to="/admin">ADMIN</Link>
         </nav>
 
         {/* RIGHT */}
