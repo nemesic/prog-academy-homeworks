@@ -6,7 +6,7 @@ import Feature from "./components/Feature";
 import Popular from "./components/Popular";
 import RatingBox from "./components/RatingBox";
 import { movies as initialMovies } from "./data/movies";
-import RangeCompare from "./components/RangeCompare";
+// import RangeCompare from "./components/RangeCompare";
 // import { FavoritesContext } from "./context/FavoritesContext";
 import { FavoritesProvider } from "./context/FavoritesProvider";
 import About from "./pages/About";
@@ -47,7 +47,7 @@ function Home({ search  }) {
       />
 
       <RatingBox />
-      <RangeCompare />
+      {/* <RangeCompare /> */}
 
       {selectedMovie && (
         <div className="movie-compare glass-card">

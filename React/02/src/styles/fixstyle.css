@@ -700,6 +700,7 @@ input, .header-search {
 }
 
 /* ====================== RANGE BOX ====================== */
+/*
 .range-box {
   margin: 40px;
   padding: 24px;
@@ -741,8 +742,10 @@ input, .header-search {
   border: 1px solid var(--border);
   font-size: 13px;
 }
+*/
 
 /* ====================== MOVIE COMPARE ====================== */
+/*
 .movie-compare {
   margin: 40px;
   padding: 24px;
@@ -775,6 +778,7 @@ input, .header-search {
   transform: scale(1.05);
   box-shadow: 0 0 20px rgba(229,9,20,0.4);
 }
+*/
 
 /* ====================== RATING BOX ====================== */
 .rating-box {
@@ -2252,6 +2256,7 @@ font-size: 15px;
     padding: 15px;
   }
 
+  /*
   .range-box,
   .movie-compare {
     width: 90%;
@@ -2264,6 +2269,7 @@ font-size: 15px;
   .movie-compare h3 {
     font-size: 14px;
   }
+  */
 }
 
 @media (max-width: 480px) {
@@ -2476,12 +2482,14 @@ font-size: 15px;
     padding: 12px;
   }
 
+  /*
   .range-box,
   .movie-compare {
     width: 95%;
     max-width: 100%;
     padding: 12px;
   }
+  */
 
   .contact-form {
     padding: 12px 8px;
