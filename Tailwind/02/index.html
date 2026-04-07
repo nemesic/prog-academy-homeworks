@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Personal Portfolio</title>
+        <script src="https://cdn.tailwindcss.com"></script>
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;800&display=swap" rel="stylesheet">
+        <link href="./styles/main.css" rel="stylesheet">
+        <style>
+            body { font-family: 'Poppins', sans-serif; }
+            .w-\[491px\] { width: 740px !important; }
+            .left-\[707px\] { left: 850px !important; }
+            .top-\[680px\] { top: 762px !important; }
+            .top-\[762px\] { top: 620px !important; }
+            .w-\[319px\] { width: 294px !important; }
+        </style>
+</head>
+<body class="bg-[#030303] w-[1440px] h-[900px] mx-auto overflow-x-hidden relative">
+
+    <!-- Header -->
+    <header class="flex items-center justify-between w-[1200px] mx-auto pt-[35px] px-0">
+        <img src="img/Group 9.png" alt="Logo" class="w-[132px] h-[33px] object-contain" />
+        <nav>
+            <ul class="flex gap-10 text-[#FEFEFE] text-[20px] font-semibold">
+                <li><a href="#" class="hover:underline">Home</a></li>
+                <li><a href="#" class="hover:underline">About</a></li>
+                <li><a href="#" class="hover:underline">Project</a></li>
+                <li><a href="#" class="hover:underline">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+        <!-- Hero Section -->
+        <main class="w-[1200px] mx-auto flex flex-row relative" style="top:50px;">
+            <div class="flex flex-col gap-6" style="position:relative; left:0; top:0;">
+                <h1 class="w-[366px] text-[#FEFEFE] font-extrabold text-[50px] leading-[65px] mt-[55px]">Be Creative,<br>Be Impressive</h1>
+                <div class="w-[391px] text-[#CFCFCF] font-semibold text-[18px] leading-[27px] mt-[28px]">Creative Designer and Social Media Officer</div>
+                <div class="w-[460px] text-[#CFCFCF] font-semibold text-[18px] leading-[27px] mt-[32px]">I have to be able to communicate ideas to a wide range of stakeholders in both my own voice and in Sprout's. Communicating on social.</div>
+                <!-- Button Group -->
+                <div class="flex w-[372px] h-[63px] mt-[45px] rounded-[50px] overflow-hidden">
+                    <button class="w-[176px] h-[63px] rounded-[50px] bg-[#FEFEFE] text-black font-medium text-[18px] leading-[63px] border-none focus:outline-none">Portfolio</button>
+                    <button class="w-[196px] h-[63px] rounded-[50px] bg-transparent text-[#CFCFCF] font-normal text-[18px] leading-[63px] border-none focus:outline-none">Curriculum Vitae</button>
+                </div>
+            </div>
+            <div class="relative" style="left:135px; top:0;">
+                <img src="img/hero image.png" alt="Hero" class="w-[491px] h-[717px] object-contain" />
+            </div>
+            <img src="img/Group 14.png" alt="Decorative" class="absolute w-[319px] h-[71px] left-[915px] top-[762px]" style="z-index:10;" />
+        </main>
+</body>
+</html>

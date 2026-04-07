@@ -1,0 +1,10 @@
+{
+  "name": "tailwind-portfolio",
+  "version": "1.0.0",
+  "scripts": {
+    "watch": "tailwindcss -i ./styles/main.css -o ./styles/output.css --watch"
+  },
+  "devDependencies": {
+    "tailwindcss": "^3.3.0"
+  }
+}
