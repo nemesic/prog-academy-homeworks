@@ -2,40 +2,82 @@
 @tailwind components;
 @tailwind utilities;
 
-
-.page {
-  @apply bg-[#1E1E1E] flex items-center justify-center min-h-screen;
+.theme-default {
+  background-color: #1E1E1E;
+}
+.theme-light {
+  background-color: #F6FBF9;
+}
+.theme-dark {
+  background-color: #000000;
 }
 
 .timer-card {
-  @apply bg-[#1E1E1E] w-[300px] h-[400px] rounded-3xl flex items-center justify-center shadow-2xl;
+  background-color: #1E1E1E;
+  width: 300px;
+  height: 300px;
+  border-radius: 9999px;
+  box-shadow: 0 10px 15px rgba(0,0,0,0.2);
+  position: relative;
 }
 
-
-.timer-wrapper {
-  @apply relative flex items-center justify-center;
-}
-
-.progress-ring {
-  @apply rotate-[-90deg];
-}
-
-.ring-bg {
-  @apply fill: none;
-  stroke: #1E1E1E;
+.ring-bg-default {
+  stroke: #333;
   stroke-width: 12;
+  fill: none;
 }
-
-.ring-progress {
-  @apply fill: none;
-  stroke: #FFA500;
+.ring-progress-default {
+  stroke: #ffa300;
   stroke-width: 12;
+  fill: none;
   stroke-linecap: round;
-  transition: stroke-dashoffset 1s linear, stroke 1s linear;
+  transition: stroke 0.1s, stroke-dashoffset 0.1s linear;
+  transform: rotate(-90deg);
+  transform-origin: 50% 50%;
+}
+
+.ring-bg-light {
+  stroke: #F6FBF9;
+  stroke-width: 12;
+  fill: none;
+}
+.ring-progress-light {
+  stroke: #84C7AE;
+  stroke-width: 12;
+  fill: none;
+  stroke-linecap: round;
+  transition: stroke 0.1s, stroke-dashoffset 0.1s linear;
+  transform: rotate(-90deg);
+  transform-origin: 50% 50%;
+}
+
+.ring-bg-dark {
+  stroke: #23274d;
+  stroke-width: 12;
+  fill: none;
+}
+.ring-progress-dark {
+  stroke: #F87070;
+  stroke-width: 12;
+  fill: none;
+  stroke-linecap: round;
+  transition: stroke 0.1s, stroke-dashoffset 0.1s linear;
   transform: rotate(-90deg);
   transform-origin: 50% 50%;
 }
 
 .time {
-  @apply absolute text-white text-5xl font-bold;
+  position: relative;
+  z-index: 10;
+  font-size: 64px;
+  font-weight: bold;
+  text-align: center;
+}
+
+.theme-default .time,
+.theme-dark .time {
+  color: #fff;
+}
+.theme-light .time {
+  color: #000;
 }

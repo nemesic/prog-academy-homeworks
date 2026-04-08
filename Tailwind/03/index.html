@@ -7,14 +7,20 @@
   <link href="./styles/style.css" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-[#1E1E1E] min-h-screen flex flex-col items-center justify-center">
+<body class="theme-default min-h-screen flex flex-col items-center justify-center">
 
-  <div class="bg-[#1E1E1E] rounded-full w-[300px] h-[300px] flex items-center justify-center shadow-lg mb-8 relative">
+  <div class="flex gap-4 mb-6">
+    <button id="defaultThemeBtn" class="px-4 py-2 rounded bg-gray-400 text-black font-semibold">Default</button>
+    <button id="lightThemeBtn" class="px-4 py-2 rounded bg-yellow-200 text-black font-semibold">Light</button>
+    <button id="darkThemeBtn" class="px-4 py-2 rounded bg-gray-800 text-white font-semibold">Dark</button>
+  </div>
+
+  <div class="timer-card flex items-center justify-center relative mb-8">
     <svg class="absolute left-0 top-0" width="300" height="300">
-      <circle class="ring-bg" cx="150" cy="150" r="138" stroke="#1E1E1E"/>
-      <circle class="ring-progress" cx="150" cy="150" r="138"/>
+      <circle class="ring-bg ring-bg-default" cx="150" cy="150" r="138"/>
+      <circle class="ring-progress ring-progress-default" cx="150" cy="150" r="138"/>
     </svg>
-    <div id="time" class="relative z-10 text-white text-[64px] font-bold select-none">25:00</div>
+    <div id="time" class="time select-none">25:00</div>
   </div>
   <div class="flex gap-6 mb-8">
     <button id="startBtn" class="bg-[#FFA500] text-white px-8 py-3 rounded-full text-lg font-semibold hover:bg-[#fff] hover:text-black transition">Start</button>
@@ -23,6 +29,7 @@
 
   <script>
     const ring = document.querySelector('.ring-progress');
+    const ringBg = document.querySelector('.ring-bg');
     const timeDisplay = document.getElementById('time');
     const startBtn = document.getElementById('startBtn');
     const resetBtn = document.getElementById('resetBtn');
@@ -39,9 +46,6 @@
     function setProgress(percent) {
       const offset = CIRCUMFERENCE - (percent / 100) * CIRCUMFERENCE;
       ring.style.strokeDashoffset = offset;
-      if (percent > 50) ring.style.stroke = '#ffa300';
-      else if (percent > 20) ring.style.stroke = '#1dd1a1';
-      else ring.style.stroke = '#ff6b6b';
     }
 
     function updateDisplay() {
@@ -72,6 +76,25 @@
       interval = null;
       timeLeft = TOTAL_TIME;
       updateDisplay();
+    };
+
+    document.getElementById('defaultThemeBtn').onclick = function() {
+      ring.className = 'ring-progress ring-progress-default';
+      ringBg.className = 'ring-bg ring-bg-default';
+      document.body.className = 'theme-default min-h-screen flex flex-col items-center justify-center';
+      timeDisplay.className = 'time select-none';
+    };
+    document.getElementById('lightThemeBtn').onclick = function() {
+      ring.className = 'ring-progress ring-progress-light';
+      ringBg.className = 'ring-bg ring-bg-light';
+      document.body.className = 'theme-light min-h-screen flex flex-col items-center justify-center';
+      timeDisplay.className = 'time select-none';
+    };
+    document.getElementById('darkThemeBtn').onclick = function() {
+      ring.className = 'ring-progress ring-progress-dark';
+      ringBg.className = 'ring-bg ring-bg-dark';
+      document.body.className = 'theme-dark min-h-screen flex flex-col items-center justify-center';
+      timeDisplay.className = 'time select-none';
     };
 
     updateDisplay();
