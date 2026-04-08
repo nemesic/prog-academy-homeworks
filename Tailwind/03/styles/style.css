@@ -1,0 +1,41 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+.page {
+  @apply bg-[#1E1E1E] flex items-center justify-center min-h-screen;
+}
+
+.timer-card {
+  @apply bg-[#1E1E1E] w-[300px] h-[400px] rounded-3xl flex items-center justify-center shadow-2xl;
+}
+
+
+.timer-wrapper {
+  @apply relative flex items-center justify-center;
+}
+
+.progress-ring {
+  @apply rotate-[-90deg];
+}
+
+.ring-bg {
+  @apply fill: none;
+  stroke: #1E1E1E;
+  stroke-width: 12;
+}
+
+.ring-progress {
+  @apply fill: none;
+  stroke: #FFA500;
+  stroke-width: 12;
+  stroke-linecap: round;
+  transition: stroke-dashoffset 1s linear, stroke 1s linear;
+  transform: rotate(-90deg);
+  transform-origin: 50% 50%;
+}
+
+.time {
+  @apply absolute text-white text-5xl font-bold;
+}

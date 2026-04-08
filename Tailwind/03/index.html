@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Timer UI</title>
+  <link href="./styles/style.css" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-[#1E1E1E] min-h-screen flex flex-col items-center justify-center">
+
+  <div class="bg-[#1E1E1E] rounded-full w-[300px] h-[300px] flex items-center justify-center shadow-lg mb-8 relative">
+    <svg class="absolute left-0 top-0" width="300" height="300">
+      <circle class="ring-bg" cx="150" cy="150" r="138" stroke="#1E1E1E"/>
+      <circle class="ring-progress" cx="150" cy="150" r="138"/>
+    </svg>
+    <div id="time" class="relative z-10 text-white text-[64px] font-bold select-none">25:00</div>
+  </div>
+  <div class="flex gap-6 mb-8">
+    <button id="startBtn" class="bg-[#FFA500] text-white px-8 py-3 rounded-full text-lg font-semibold hover:bg-[#fff] hover:text-black transition">Start</button>
+    <button id="resetBtn" class="bg-[#FFA500] text-white px-8 py-3 rounded-full text-lg font-semibold hover:bg-[#fff] hover:text-black transition">Reset</button>
+  </div>
+
+  <script>
+    const ring = document.querySelector('.ring-progress');
+    const timeDisplay = document.getElementById('time');
+    const startBtn = document.getElementById('startBtn');
+    const resetBtn = document.getElementById('resetBtn');
+
+    const RADIUS = 138;
+    const CIRCUMFERENCE = 2 * Math.PI * RADIUS;
+    ring.style.strokeDasharray = `${CIRCUMFERENCE} ${CIRCUMFERENCE}`;
+    ring.style.strokeDashoffset = CIRCUMFERENCE;
+
+    const TOTAL_TIME = 25 * 60;
+    let timeLeft = TOTAL_TIME;
+    let interval = null;
+
+    function setProgress(percent) {
+      const offset = CIRCUMFERENCE - (percent / 100) * CIRCUMFERENCE;
+      ring.style.strokeDashoffset = offset;
+      if (percent > 50) ring.style.stroke = '#ffa300';
+      else if (percent > 20) ring.style.stroke = '#1dd1a1';
+      else ring.style.stroke = '#ff6b6b';
+    }
+
+    function updateDisplay() {
+      const minutes = Math.floor(timeLeft / 60).toString().padStart(2, '0');
+      const seconds = (timeLeft % 60).toString().padStart(2, '0');
+      timeDisplay.textContent = `${minutes}:${seconds}`;
+      setProgress((timeLeft / TOTAL_TIME) * 100);
+    }
+
+    startBtn.onclick = function () {
+      if (interval) return;
+      interval = setInterval(() => {
+        if (timeLeft > 0) {
+          timeLeft--;
+          updateDisplay();
+        } else {
+          clearInterval(interval);
+          interval = null;
+          alert("Час вийшов!");
+          timeLeft = TOTAL_TIME;
+          updateDisplay();
+        }
+      }, 1000);
+    };
+
+    resetBtn.onclick = function () {
+      clearInterval(interval);
+      interval = null;
+      timeLeft = TOTAL_TIME;
+      updateDisplay();
+    };
+
+    updateDisplay();
+  </script>
+</body>
+</html>
