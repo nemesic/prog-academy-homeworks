@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personal Portfolio</title>
+    <link href="/styles/style.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="src/style.css" rel="stylesheet">
+    <link href="dist/output.css" rel="stylesheet">
+</head>
+<body class="bg-[#030303] w-[1440px] h-[900px] mx-auto overflow-x-hidden relative font-['Poppins']">
+    <header class="flex items-center justify-between w-[1200px] mx-auto pt-[35px] px-0">
+        <div class="flex items-center gap-6">
+            <a href="cv-light.html">
+                <img src="src/img/Group 9.png" alt="Logo" class="w-[132px] h-[33px] object-contain" />
+            </a>
+        </div>
+        <nav>
+            <ul class="flex gap-10 text-[#8A8A8A] text-[20px] font-semibold">
+                <li>
+                    <a href="#" class="transition hover:text-[#FEFEFE]">Home</a>
+                </li>
+                <li>
+                    <a href="#" class="transition hover:text-[#FEFEFE]">About</a>
+                </li>
+                <li>
+                    <a href="#" class="transition hover:text-[#FEFEFE]">Project</a>
+                </li>
+                <li>
+                    <a href="#" class="transition hover:text-[#FEFEFE]">Contact</a>
+                </li>
+            </ul>
+        </nav>
+    </header>
+    <main class="w-[1200px] mx-auto flex flex-row relative" style="top:50px;">
+        <div class="flex flex-col gap-6" style="position:relative; left:0; top:0;">
+            <h1
+                class="w-[366px] mt-[55px] leading-[65px] text-[#FEFEFE] font-extrabold animate-fade-in-up"
+                style="font-family:'Poppins',sans-serif; font-weight:800; font-size:50px; line-height:65px;">
+                Be Creative,<br>Be Impressive
+            </h1>
+            <div
+                class="w-[391px] mt-[28px] text-[#CFCFCF] font-semibold animate-fade-in-up"
+                style="font-family:'Poppins',sans-serif; font-weight:600; font-size:18px; line-height:27px;">
+                Creative Designer and Social Media Officer
+            </div>
+            <div
+                class="w-[460px] text-[#CFCFCF] font-normal mt-[32px] animate-fade-in-up"
+                style="font-family:'Poppins',sans-serif; font-weight:400; font-size:16px; line-height:27px;">
+                I have to be able to communicate ideas to a wide range of stakeholders in both my own voice and in Sprout's. Communicating on social.
+            </div>
+            <div class="flex w-[372px] h-[63px] mt-[45px] rounded-[50px] overflow-hidden relative bg-[#030303]">
+                <span id="btn-slider" class="absolute top-0 left-0 h-full w-[176px] rounded-[50px] bg-[#FEFEFE] transition-all duration-300 z-0"></span>
+                <button id="btn-portfolio" type="button"
+                    class="relative z-10 w-[176px] h-[63px] rounded-[50px] bg-transparent font-medium text-[18px] border-none focus:outline-none transition-all duration-300 flex items-center justify-center group animate-fade-in-up">
+                    <span id="span-portfolio" class="w-full text-center transition-transform duration-300 group-hover:scale-110 group-active:scale-95 text-black">Portfolio</span>
+                </button>
+                <button id="btn-cv" type="button"
+                    class="relative z-10 w-[196px] h-[63px] rounded-[50px] bg-transparent font-medium text-[18px] border-none focus:outline-none transition-all duration-300 flex items-center justify-center group animate-fade-in-up">
+                    <span id="span-cv" class="w-full text-center transition-transform duration-300 group-hover:scale-110 group-active:scale-95 text-[#CFCFCF]">Curriculum Vitae</span>
+                </button>
+            </div>
+        </div>
+        <div class="relative" style="left:135px; top:0;">
+            <img src="src/img/hero image.png" alt="Hero" class="w-[491px] h-[717px] object-contain" style="width:720px !important;" />
+        </div>
+        <img src="src/img/Group 14.png" alt="Decorative" class="absolute w-[319px] h-[71px] left-[915px] top-[762px]" style="left:882px; top:635px; z-index:10;" />
+    </main>
+</body>
+</html>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const btnPortfolio = document.getElementById('btn-portfolio');
+    const btnCV = document.getElementById('btn-cv');
+    const slider = document.getElementById('btn-slider');
+    const spanPortfolio = document.getElementById('span-portfolio');
+    const spanCV = document.getElementById('span-cv');
+
+    function removeBounce() {
+        spanPortfolio.classList.remove('animate-my-bounce');
+        spanCV.classList.remove('animate-my-bounce');
+    }
+
+    function activatePortfolio() {
+        slider.style.left = '0';
+        slider.style.width = btnPortfolio.offsetWidth + 'px';
+        spanPortfolio.classList.add('text-black');
+        spanPortfolio.classList.remove('text-[#CFCFCF]');
+        spanCV.classList.add('text-[#CFCFCF]');
+        spanCV.classList.remove('text-black');
+        removeBounce();
+        spanPortfolio.classList.add('animate-my-bounce');
+        setTimeout(() => spanPortfolio.classList.remove('animate-my-bounce'), 700);
+    }
+
+    function activateCV() {
+        slider.style.left = btnPortfolio.offsetWidth + 'px';
+        slider.style.width = btnCV.offsetWidth + 'px';
+        spanCV.classList.add('text-black');
+        spanCV.classList.remove('text-[#CFCFCF]');
+        spanPortfolio.classList.add('text-[#CFCFCF]');
+        spanPortfolio.classList.remove('text-black');
+        removeBounce();
+        spanCV.classList.add('animate-my-bounce');
+        setTimeout(() => spanCV.classList.remove('animate-my-bounce'), 700);
+    }
+
+    btnPortfolio.addEventListener('click', activatePortfolio);
+    btnCV.addEventListener('click', activateCV);
+    activatePortfolio();
+});
+</script>
