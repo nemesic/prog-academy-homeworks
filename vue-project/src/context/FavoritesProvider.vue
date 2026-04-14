@@ -1,4 +1,5 @@
 <script setup>
+// filepath: d:\work\TailwindCSS\vue-project\src\context\FavoritesProvider.vue
 import { ref, provide, watch, defineEmits } from 'vue'
 
 const emit = defineEmits(['add', 'remove', 'clear'])
@@ -8,7 +9,9 @@ const favorites = ref([])
 try {
   const saved = localStorage.getItem('favorites')
   if (saved) favorites.value = JSON.parse(saved)
-} catch {}
+} catch (e) {
+  // ignore
+}
 
 watch(favorites, (val) => {
   localStorage.setItem('favorites', JSON.stringify(val))
@@ -20,6 +23,7 @@ function addToFavorites(movie) {
     emit('add', movie)
   }
 }
+
 function removeFromFavorites(id) {
   const idx = favorites.value.findIndex(m => m.id === id)
   if (idx !== -1) {
@@ -28,9 +32,11 @@ function removeFromFavorites(id) {
     emit('remove', removed)
   }
 }
+
 function isFavorite(id) {
   return favorites.value.some(m => m.id === id)
 }
+
 function clearFavorites() {
   favorites.value = []
   emit('clear')

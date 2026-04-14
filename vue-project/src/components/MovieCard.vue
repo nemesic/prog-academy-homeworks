@@ -1,23 +1,31 @@
 <template>
-  <div class="movie-card" @click="selectMovie" tabindex="0" aria-label="Movie card">
+  <div 
+    class="movie-card group relative cursor-pointer rounded-2xl overflow-hidden shadow-lg transition-all duration-200 hover:shadow-2xl hover:-translate-y-2 hover:scale-[1.03] focus:outline-none focus:ring-2 focus:ring-red-600"
+    @click="selectMovie"
+    tabindex="0"
+    aria-label="Movie card"
+  >
     <img
       :src="img"
       :alt="title"
-      class="movie-card-img"
+      class="movie-card-img w-full h-62.5 object-cover transition-transform duration-300 group-hover:scale-105"
       draggable="false"
     />
-    <i
-      :class="['fa-heart', fav ? 'fa-solid' : 'fa-regular', 'movie-fav-icon']"
+    <!-- Favorite Icon -->
+    <button
       @click.stop="handleFavoriteClick"
       :aria-label="fav ? 'Remove from favorites' : 'Add to favorites'"
       :aria-pressed="fav"
       tabindex="0"
-      role="button"
-    />
+      class="movie-fav-icon absolute top-3 right-3 w-9 h-9 flex items-center justify-center bg-black/50 hover:bg-red-600/90 backdrop-blur-sm rounded-full text-2xl transition-all duration-200 hover:scale-110 z-10"
+    >
+      <i :class="fav ? 'fa-solid fa-heart' : 'fa-regular fa-heart'" class="text-white"></i>
+    </button>
   </div>
 </template>
 
 <script setup>
+// filepath: d:\work\TailwindCSS\vue-project\src\components\MovieCard.vue
 import { inject, computed } from 'vue'
 
 const props = defineProps({
@@ -28,13 +36,14 @@ const props = defineProps({
 })
 
 const favoritesContext = inject('favoritesContext')
-const addToFavorites = favoritesContext?.addToFavorites || (() => {})
-const removeFromFavorites = favoritesContext?.removeFromFavorites || (() => {})
-const isFavorite = favoritesContext?.isFavorite || (() => false)
+const addToFavorites = favoritesContext?.addToFavorites
+const removeFromFavorites = favoritesContext?.removeFromFavorites
+const isFavorite = favoritesContext?.isFavorite
 
-const fav = computed(() => isFavorite(props.movie.id))
+const fav = computed(() => isFavorite && props.movie?.id ? isFavorite(props.movie.id) : false)
 
 function handleFavoriteClick() {
+  if (!favoritesContext) return
   if (fav.value) {
     removeFromFavorites(props.movie.id)
   } else {
@@ -46,51 +55,3 @@ function selectMovie() {
   if (props.onSelect) props.onSelect(props.movie)
 }
 </script>
-
-<style scoped>
-.movie-card {
-  position: relative;
-  cursor: pointer;
-  border-radius: 12px;
-  overflow: hidden;
-  transition: box-shadow 0.18s, transform 0.18s;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.18);
-  outline: none;
-}
-.movie-card:focus,
-.movie-card:hover {
-  box-shadow: 0 6px 24px rgba(229,9,20,0.18);
-  transform: translateY(-2px) scale(1.03);
-}
-.movie-card-img {
-  width: 100%;
-  height: 250px;
-  object-fit: cover;
-  border-radius: 12px;
-  display: block;
-  user-select: none;
-  pointer-events: none;
-}
-.movie-fav-icon {
-  position: absolute;
-  top: 12px;
-  right: 12px;
-  color: #e50914;
-  background: rgba(0,0,0,0.32);
-  border-radius: 50%;
-  padding: 6px;
-  font-size: 22px;
-  cursor: pointer;
-  transition: color 0.18s, background 0.18s, transform 0.18s;
-  z-index: 2;
-}
-.movie-fav-icon.fa-regular {
-  color: #fff;
-}
-.movie-fav-icon:hover,
-.movie-fav-icon:focus {
-  color: #e50914;
-  background: rgba(229,9,20,0.08);
-  transform: scale(1.15);
-}
-</style>

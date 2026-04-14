@@ -1,27 +1,44 @@
 <template>
-  <section class="popular-section" v-if="isLoggedIn">
-    <div class="content-wrapper">
-      <div class="popular-header">
-        <h4>POPULAR THIS WEEK</h4>
-        <div class="navigation-arrows">
-          <button class="arrow-left" @click="scrollLeft" aria-label="Previous movies">
-            <i class="fa-solid fa-chevron-left"></i>
+  <section class="popular-section py-12" v-if="isLoggedIn">
+    <div class="content-wrapper mx-auto px-4 md:px-10 max-w-275">
+      
+      <!-- Header -->
+      <div class="popular-header flex items-center justify-between mb-6">
+        <h4 class="text-white uppercase text-2xl font-black tracking-[3px]">
+          POPULAR THIS WEEK
+        </h4>
+        
+        <div class="navigation-arrows flex gap-4">
+          <button 
+            @click="scrollLeft"
+            class="arrow-left w-14 h-14 flex items-center justify-center bg-black/40 border-2 border-white/80 hover:border-red-600 hover:bg-red-600/80 rounded-full backdrop-blur-md transition-all active:scale-95"
+            aria-label="Previous movies"
+          >
+            <i class="fa-solid fa-chevron-left text-2xl text-white"></i>
           </button>
-          <button class="arrow-right" @click="scrollRight" aria-label="Next movies">
-            <i class="fa-solid fa-chevron-right"></i>
+          <button 
+            @click="scrollRight"
+            class="arrow-right w-14 h-14 flex items-center justify-center bg-black/40 border-2 border-white/80 hover:border-red-600 hover:bg-red-600/80 rounded-full backdrop-blur-md transition-all active:scale-95"
+            aria-label="Next movies"
+          >
+            <i class="fa-solid fa-chevron-right text-2xl text-white"></i>
           </button>
         </div>
       </div>
-      <div v-if="initialLoading" style="text-align:center;padding:40px 0;">
-        <span class="spinner"></span>
-        <span style="color:#fff;font-size:18px;margin-left:10px;">Loading popular movies...</span>
+
+      <!-- Loading -->
+      <div v-if="initialLoading" class="py-20 text-center">
+        <div class="inline-block w-8 h-8 border-4 border-white/30 border-t-red-600 rounded-full animate-spin"></div>
+        <p class="text-white text-lg mt-4">Loading popular movies...</p>
       </div>
+
+      <!-- Swiper -->
       <Swiper
         v-else
         class="shows-row"
         :modules="[Navigation, Autoplay]"
         @swiper="setSwiperInstance"
-        :spaceBetween="14"
+        :spaceBetween="16"
         :slidesPerView="2.1"
         :navigation="false"
         :autoplay="{ delay: 3300, disableOnInteraction: false }"
@@ -37,12 +54,21 @@
           />
         </SwiperSlide>
       </Swiper>
-      <div v-if="!filteredMovies.length && !initialLoading" style="text-align:center;color:#e50914;margin:32px 0 0 0;font-size:1.2rem;">
+
+      <!-- No movies -->
+      <div v-if="!filteredMovies.length && !initialLoading" 
+           class="text-center py-12 text-red-500 text-xl">
         No movies found.
       </div>
-      <div style="text-align:center;margin-top:20px">
-        <button class="load-more-btn" @click="loadMore" :disabled="loading">
-          <span v-if="loading" class="spinner"></span>
+
+      <!-- Load More -->
+      <div class="flex justify-center mt-10">
+        <button 
+          @click="loadMore" 
+          :disabled="loading"
+          class="load-more-btn px-10 py-4 bg-linear-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 disabled:opacity-70 font-bold text-white rounded-2xl text-lg shadow-lg shadow-red-600/40 transition-all active:scale-95 flex items-center gap-3"
+        >
+          <span v-if="loading" class="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></span>
           {{ loading ? 'Loading...' : 'Load More' }}
         </button>
       </div>
@@ -99,28 +125,31 @@ function loadMore() {
 }
 
 const filteredMovies = computed(() => {
-  if (!props.search.trim()) return props.movies
-  return props.movies.filter((movie) =>
-    movie.title.toLowerCase().includes(props.search.toLowerCase())
-  )
+  if (!props.search?.trim()) return props.movies
+  const q = props.search.trim().toLowerCase()
+  return props.movies.filter((movie) => {
+    const title = movie.title.toLowerCase()
+    return (
+      title === q ||
+      title.startsWith(q) ||
+      title.split(/\s+/).some(word => word.startsWith(q))
+    )
+  })
 })
 
 async function fetchPopularMovies(newPage) {
   loading.value = true
   try {
     const [moviesRes, seriesRes] = await Promise.all([
-      fetch(
-        `https://api.themoviedb.org/3/movie/popular?api_key=${API_KEY}&language=en-US&page=${newPage}`
-      ),
-      fetch(
-        `https://api.themoviedb.org/3/tv/popular?api_key=${API_KEY}&language=en-US&page=${newPage}`
-      ),
+      fetch(`https://api.themoviedb.org/3/movie/popular?api_key=${API_KEY}&language=en-US&page=${newPage}`),
+      fetch(`https://api.themoviedb.org/3/tv/popular?api_key=${API_KEY}&language=en-US&page=${newPage}`)
     ])
+    
     const moviesData = await moviesRes.json()
     const seriesData = await seriesRes.json()
-    const moviesList = moviesData.results || []
-    const seriesList = seriesData.results || []
-    const combined = [...moviesList, ...seriesList]
+
+    const combined = [...(moviesData.results || []), ...(seriesData.results || [])]
+    
     const formatted = combined.map((item) => ({
       id: item.id,
       title: item.title || item.name,
@@ -129,13 +158,13 @@ async function fetchPopularMovies(newPage) {
         : 'https://via.placeholder.com/300x450',
       raw: item,
     }))
+
     props.setApiMovies((prev) => {
-      const ids = new Set(prev.map((m) => m.id))
-      const newItems = formatted.filter((m) => !ids.has(m.id))
+      const ids = new Set(prev.map(m => m.id))
+      const newItems = formatted.filter(m => !ids.has(m.id))
       return [...prev, ...newItems]
     })
   } catch (error) {
-    // Покращено: показати помилку користувачу
     alert('Failed to load movies. Please try again later.')
   } finally {
     loading.value = false
