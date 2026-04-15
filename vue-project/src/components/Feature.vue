@@ -61,42 +61,15 @@
         </button>
 
         <button 
-          @click="showEpisodes = true"
-          class="episodes-list flex-1 sm:flex-none border-2 border-white hover:border-white/90 bg-white/10 hover:bg-white/20 backdrop-blur-md h-14 sm:h-14.5 px-10 rounded-xl font-bold text-lg md:text-xl tracking-wider transition-all flex items-center justify-center"
+          type="button"
+          class="episodes-list flex-1 sm:flex-none border-2 border-white hover:border-white/90 bg-white/10 hover:bg-white/20 backdrop-blur-md h-14 sm:h-14.5 px-10 rounded-xl font-bold text-lg md:text-xl tracking-wider transition-all flex items-center justify-center cursor-default opacity-80"
+          disabled
         >
           ALL EPISODES
         </button>
       </div>
 
-      <!-- Episodes Modal -->
-      <teleport to="body">
-        <div 
-          v-if="showEpisodes" 
-          class="episodes-modal-overlay fixed inset-0 bg-black/80 backdrop-blur-sm z-1000 flex items-center justify-center"
-          @click.self="showEpisodes = false"
-        >
-          <div class="episodes-modal bg-[#181818] border-2 border-[#e50914] rounded-3xl p-8 md:p-10 max-w-105 w-[92vw] shadow-2xl">
-            <h3 class="text-[#e50914] text-2xl font-bold mb-6 text-center">All Episodes</h3>
-            
-            <ul class="space-y-1 mb-8">
-              <li 
-                v-for="(ep, i) in episodes" 
-                :key="i"
-                class="px-5 py-4 hover:bg-white/10 rounded-xl cursor-pointer transition-colors"
-              >
-                {{ ep.title || `Episode ${i + 1}` }}
-              </li>
-            </ul>
-
-            <button 
-              @click="showEpisodes = false"
-              class="close-btn w-full bg-[#e50914] hover:bg-[#f40613] py-4 rounded-2xl font-bold text-lg transition-all active:scale-95"
-            >
-              Close
-            </button>
-          </div>
-        </div>
-      </teleport>
+      <!-- Episodes Modal removed by user request -->
     </div>
   </main>
 </template>
@@ -106,7 +79,7 @@ import { ref } from 'vue'
 
 const props = defineProps({
   title: { type: String, required: true },
-  description: { type: String, required: true },
+  description: { type: String, default: '' },
   genres: { type: Array, default: () => ['Drama', 'Thriller', 'Supernatural'] },
   director: { type: String, default: 'Shawn Levy' },
   year: { type: [String, Number], default: '2019' },
@@ -114,10 +87,10 @@ const props = defineProps({
   episodes: {
     type: Array,
     default: () => [
-      { title: 'Episode 1: The Beginning' },
-      { title: 'Episode 2: The Mystery' },
-      { title: 'Episode 3: The Upside Down' },
-      { title: 'Episode 4: The Rescue' }
+      { title: 'Episode 1' },
+      { title: 'Episode 2' },
+      { title: 'Episode 3' },
+      { title: 'Episode 4' }
     ]
   },
   initialRating: { type: Number, default: 3 }
@@ -137,5 +110,67 @@ function showStreamAlert() {
   alert('Streaming started')
 }
 
-const showEpisodes = ref(false)
+
 </script>
+
+
+<style scoped>
+
+@keyframes fadeInModalBg {
+  0% { opacity: 0; }
+  100% { opacity: 1; }  
+}
+.modal-fade-enter-active, .modal-fade-leave-active {
+  transition: opacity 0.38s cubic-bezier(.4,0,.2,1);
+}
+.modal-fade-enter-from, .modal-fade-leave-to {
+  opacity: 0;
+}
+.modal-fade-enter-to, .modal-fade-leave-from {
+  opacity: 1;
+}
+
+.shadow-glow {
+  box-shadow: 0 0 0 6px #e50914cc, 0 0 32px 8px #e50914cc, 0 18px 64px 0 #e5091440, 0 2px 8px #fff2;
+}
+
+.animate-pop-in {
+  animation: pop-in 0.5s cubic-bezier(.4,0,.2,1);
+}
+@keyframes pop-in {
+  0% { opacity: 0; transform: scale(0.92); }
+  80% { opacity: 1; transform: scale(1.04); }
+  100% { opacity: 1; transform: scale(1); }
+}
+.animate-bounce-short {
+  animation: bounce-short 0.7s;
+}
+@keyframes bounce-short {
+  0% { transform: translateY(-18px); }
+  60% { transform: translateY(8px); }
+  100% { transform: translateY(0); }
+}
+.animate-episodes-title {
+  animation: episodes-title-pop 0.7s cubic-bezier(.4,0,.2,1);
+}
+@keyframes episodes-title-pop {
+  0% { opacity: 0; transform: scale(0.8); }
+  60% { opacity: 1; transform: scale(1.08); }
+  100% { opacity: 1; transform: scale(1); }
+}
+.custom-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: #e50914 #222;
+}
+.custom-scrollbar::-webkit-scrollbar {
+  width: 7px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #e50914;
+  border-radius: 8px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: #222;
+  border-radius: 8px;
+}
+</style>

@@ -1,34 +1,37 @@
 <template>
-  <transition name="modal-fade">
-    <div class="modal-bg fixed inset-0 bg-black/85 backdrop-blur-sm z-9999 flex items-center justify-center">
-      <div 
-        class="login-modal relative bg-[#181818] border-2 border-[#e50914] rounded-3xl p-10 md:p-12 max-w-95 w-[92vw] shadow-2xl"
+  <transition name="modal">
+    <div class="fixed inset-0 bg-black/80 backdrop-blur-md flex items-center justify-center z-50">
+
+      <div
+        class="modal-card relative w-[92vw] max-w-md bg-[#141414]/95 border border-white/10 rounded-2xl p-8 shadow-2xl"
         role="dialog"
         aria-modal="true"
       >
-        <!-- Close Button -->
+
+        <!-- CLOSE -->
         <button
           @click="emit('close')"
-          aria-label="Close login modal"
-          type="button"
-          class="close-modal-btn absolute top-4 right-4 w-9 h-9 bg-white/10 border border-[#e50914] hover:bg-red-950/50 hover:border-white rounded-2xl flex items-center justify-center transition-all active:scale-90"
+          class="absolute top-4 right-4 w-9 h-9 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition"
         >
-          <span class="text-xl leading-none text-white hover:text-red-500 transition-colors">✕</span>
+          ✕
         </button>
 
-        <h3 class="text-[#e50914] text-3xl font-bold tracking-wide text-center mb-8">
-          Login
-        </h3>
+        <!-- TITLE -->
+        <h2 class="text-center text-white text-2xl font-bold mb-6">
+          Sign In
+        </h2>
 
-        <div class="space-y-5">
+        <!-- FORM -->
+        <div class="space-y-4">
+
           <input
             v-model="login"
-            placeholder="Login"
+            type="text"
+            placeholder="Username"
             autocomplete="username"
+            class="input"
             @keyup.enter="tryLogin"
             @input="error = ''"
-            autofocus
-            class="w-full bg-white/10 border border-white/20 focus:border-red-600 rounded-2xl px-6 py-4 text-white placeholder:text-white/50 outline-none transition-all text-base"
           />
 
           <input
@@ -36,25 +39,28 @@
             type="password"
             placeholder="Password"
             autocomplete="current-password"
+            class="input"
             @keyup.enter="tryLogin"
             @input="error = ''"
-            class="w-full bg-white/10 border border-white/20 focus:border-red-600 rounded-2xl px-6 py-4 text-white placeholder:text-white/50 outline-none transition-all text-base"
           />
 
           <button
             @click="tryLogin"
             :disabled="loading"
-            class="w-full bg-[#e50914] hover:bg-[#f40613] active:bg-red-700 disabled:opacity-70 transition-all font-bold text-lg py-4 rounded-2xl mt-3 flex items-center justify-center gap-3 shadow-lg shadow-red-600/40"
+            class="btn"
           >
-            <span v-if="loading" class="login-spinner w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></span>
-            <span v-else>Login</span>
+            <span v-if="loading" class="loader"></span>
+            <span v-else>Sign In</span>
           </button>
+
+          <p v-if="error" class="text-red-500 text-sm text-center mt-2">
+            {{ error }}
+          </p>
+
         </div>
 
-        <div v-if="error" class="login-error text-red-500 text-center font-medium mt-5">
-          {{ error }}
-        </div>
       </div>
+
     </div>
   </transition>
 </template>
@@ -72,19 +78,90 @@ const loading = ref(false)
 function tryLogin() {
   if (loading.value) return
 
-  error.value = ''
   loading.value = true
+  error.value = ''
 
   setTimeout(() => {
     if (login.value === 'admin' && password.value === '12345') {
       emit('login', { user: login.value })
       login.value = ''
       password.value = ''
-      error.value = ''
     } else {
-      error.value = 'Invalid login or password'
+      error.value = 'Wrong username or password'
     }
     loading.value = false
-  }, 700)
+  }, 600)
 }
 </script>
+
+<style scoped>
+/* MODAL ANIMATION */
+.modal-enter-active,
+.modal-leave-active {
+  transition: all 0.25s ease;
+}
+
+.modal-enter-from,
+.modal-leave-to {
+  opacity: 0;
+  transform: scale(0.95);
+}
+
+/* INPUT */
+.input {
+  width: 100%;
+  padding: 14px 16px;
+  border-radius: 12px;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.1);
+  color: white;
+  outline: none;
+  transition: 0.2s;
+}
+
+.input:focus {
+  border-color: rgba(229, 9, 20, 0.6);
+  background: rgba(255,255,255,0.08);
+}
+
+/* BUTTON */
+.btn {
+  width: 100%;
+  padding: 14px;
+  border-radius: 12px;
+  background: #e50914;
+  color: white;
+  font-weight: 700;
+  transition: 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.btn:hover {
+  background: #ff2a2a;
+  transform: translateY(-1px);
+}
+
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* LOADER */
+.loader {
+  width: 18px;
+  height: 18px;
+  border: 2px solid rgba(255,255,255,0.3);
+  border-top-color: white;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+</style>

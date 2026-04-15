@@ -1,13 +1,11 @@
 <template>
   <section class="popular-section py-12" v-if="isLoggedIn">
-    <div class="content-wrapper mx-auto px-4 md:px-10 max-w-275">
-      
+    <div class="content-wrapper mx-auto px-4 md:px-10 max-w-5xl">
       <!-- Header -->
       <div class="popular-header flex items-center justify-between mb-6">
         <h4 class="text-white uppercase text-2xl font-black tracking-[3px]">
           POPULAR THIS WEEK
         </h4>
-        
         <div class="navigation-arrows flex gap-4">
           <button 
             @click="scrollLeft"
@@ -32,147 +30,163 @@
         <p class="text-white text-lg mt-4">Loading popular movies...</p>
       </div>
 
-      <!-- Swiper -->
-      <Swiper
-        v-else
-        class="shows-row"
-        :modules="[Navigation, Autoplay]"
-        @swiper="setSwiperInstance"
-        :spaceBetween="16"
-        :slidesPerView="2.1"
-        :navigation="false"
-        :autoplay="{ delay: 3300, disableOnInteraction: false }"
-        :breakpoints="breakpoints"
-        aria-label="Popular movies slider"
-      >
-        <SwiperSlide v-for="movie in filteredMovies" :key="movie.id">
-          <MovieCard
-            :img="movie.img"
-            :title="movie.title"
-            :movie="movie"
-            :onSelect="onSelectMovie"
-          />
-        </SwiperSlide>
-      </Swiper>
+      <!-- Swiper + Load More wrapper -->
+      <div v-else class="mx-auto" style="max-width:1055px;">
+        <Swiper
+          class="shows-row"
+          :modules="[Navigation, Autoplay]"
+          @swiper="setSwiperInstance"
+          :spaceBetween="24"
+          :breakpoints="breakpoints"
+          :autoplay="{ delay: 3200, disableOnInteraction: false }"
+          aria-label="Popular movies slider"
+        >
+          <SwiperSlide v-for="movie in filteredMovies" :key="movie.id">
+            <MovieCard
+              :img="movie.img"
+              :title="movie.title"
+              :movie="movie"
+              :onSelect="onSelectMovie"
+            />
+          </SwiperSlide>
+        </Swiper>
+        <!-- Load More (идеально по центру под слайдером) -->
+        <div class="flex justify-center mt-10">
+          <button 
+            @click="loadMore" 
+            :disabled="loading"
+            class="load-more-btn px-10 py-4 min-w-[180px] bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 disabled:opacity-70 font-bold text-white rounded-2xl text-lg drop-shadow-lg shadow-red-600/40 transition-all active:scale-95 flex items-center gap-3 ring-2 ring-red-700/30 focus:outline-none focus:ring-4"
+            style="margin: 0 auto;"
+          >
+            <span v-if="loading" class="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></span>
+            {{ loading ? 'Loading...' : 'Load More' }}
+          </button>
+        </div>
+      </div>
 
       <!-- No movies -->
       <div v-if="!filteredMovies.length && !initialLoading" 
            class="text-center py-12 text-red-500 text-xl">
         No movies found.
       </div>
-
-      <!-- Load More -->
-      <div class="flex justify-center mt-10">
-        <button 
-          @click="loadMore" 
-          :disabled="loading"
-          class="load-more-btn px-10 py-4 bg-linear-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 disabled:opacity-70 font-bold text-white rounded-2xl text-lg shadow-lg shadow-red-600/40 transition-all active:scale-95 flex items-center gap-3"
-        >
-          <span v-if="loading" class="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></span>
-          {{ loading ? 'Loading...' : 'Load More' }}
-        </button>
-      </div>
     </div>
   </section>
 </template>
 
 <script setup>
-import { ref, computed, watch, onMounted } from 'vue'
+import { ref, computed, watch } from 'vue'
 import MovieCard from './MovieCard.vue'
+
 import { Swiper, SwiperSlide } from 'swiper/vue'
 import { Navigation, Autoplay } from 'swiper/modules'
 import 'swiper/css'
-import 'swiper/css/navigation'
-
+  
 const props = defineProps({
-  isLoggedIn: { type: Boolean, default: false },
-  search: { type: String, default: '' },
-  movies: { type: Array, default: () => [] },
+  isLoggedIn: Boolean,
+  search: String,
+  movies: Array,
   setApiMovies: Function,
-  onSelectMovie: Function,
+  onSelectMovie: Function
 })
+
+const API_KEY = '9eee1c8a9ca4c5306eb86111905631a1'
 
 const page = ref(1)
 const loading = ref(false)
 const initialLoading = ref(true)
-const swiperInstance = ref(null)
-
-const API_KEY = '9eee1c8a9ca4c5306eb86111905631a1'
+const swiper = ref(null)
 
 const breakpoints = {
   320: { slidesPerView: 2 },
-  480: { slidesPerView: 2.5 },
-  640: { slidesPerView: 3.5 },
-  860: { slidesPerView: 4.5 },
-  1080: { slidesPerView: 5.5 },
-  1300: { slidesPerView: 6.5 },
+  480: { slidesPerView: 2.3 },
+  640: { slidesPerView: 3.2 },
+  860: { slidesPerView: 4.2 },
+  1080: { slidesPerView: 5.2 },
+  1300: { slidesPerView: 6.2 },
 }
 
-function setSwiperInstance(swiper) {
-  swiperInstance.value = swiper
+function setSwiperInstance(s) {
+  swiper.value = s
 }
 
 function scrollLeft() {
-  swiperInstance.value?.slidePrev()
+  swiper.value?.slidePrev()
 }
 
 function scrollRight() {
-  swiperInstance.value?.slideNext()
+  swiper.value?.slideNext()
 }
 
 function loadMore() {
-  page.value += 1
+  if (loading.value) return
+  page.value++
 }
 
-const filteredMovies = computed(() => {
-  if (!props.search?.trim()) return props.movies
-  const q = props.search.trim().toLowerCase()
-  return props.movies.filter((movie) => {
-    const title = movie.title.toLowerCase()
-    return (
-      title === q ||
-      title.startsWith(q) ||
-      title.split(/\s+/).some(word => word.startsWith(q))
-    )
-  })
-})
-
-async function fetchPopularMovies(newPage) {
-  loading.value = true
-  try {
-    const [moviesRes, seriesRes] = await Promise.all([
-      fetch(`https://api.themoviedb.org/3/movie/popular?api_key=${API_KEY}&language=en-US&page=${newPage}`),
-      fetch(`https://api.themoviedb.org/3/tv/popular?api_key=${API_KEY}&language=en-US&page=${newPage}`)
-    ])
-    
-    const moviesData = await moviesRes.json()
-    const seriesData = await seriesRes.json()
-
-    const combined = [...(moviesData.results || []), ...(seriesData.results || [])]
-    
-    const formatted = combined.map((item) => ({
-      id: item.id,
-      title: item.title || item.name,
-      img: item.poster_path
-        ? `https://image.tmdb.org/t/p/w500${item.poster_path}`
+function normalize(items) {
+  return items.map(i => {
+    let id = i.id
+    // fallback: for some TMDB items, id may be missing or duplicated, try to make unique
+    if (!id && i.title && i.name) {
+      id = `${i.title}-${i.name}`
+    } else if (!id && i.title) {
+      id = i.title
+    } else if (!id && i.name) {
+      id = i.name
+    }
+    return {
+      id,
+      title: i.title || i.name,
+      img: i.poster_path
+        ? `https://image.tmdb.org/t/p/w500${i.poster_path}`
         : 'https://via.placeholder.com/300x450',
-      raw: item,
-    }))
+      raw: i
+    }
+  })
+}
 
-    props.setApiMovies((prev) => {
-      const ids = new Set(prev.map(m => m.id))
-      const newItems = formatted.filter(m => !ids.has(m.id))
-      return [...prev, ...newItems]
+async function fetchPopular(pageNum) {
+  if (loading.value) return
+
+  loading.value = true
+
+  try {
+    const [moviesRes, tvRes] = await Promise.all([
+      fetch(`https://api.themoviedb.org/3/movie/popular?api_key=${API_KEY}&page=${pageNum}`),
+      fetch(`https://api.themoviedb.org/3/tv/popular?api_key=${API_KEY}&page=${pageNum}`)
+    ])
+
+    const moviesData = await moviesRes.json()
+    const tvData = await tvRes.json()
+
+    const combined = [
+      ...normalize(moviesData.results || []),
+      ...normalize(tvData.results || [])
+    ]
+
+    // IMPORTANT: dedupe by id
+    props.setApiMovies(prev => {
+      const map = new Map(prev.map(m => [m.id, m]))
+      combined.forEach(m => map.set(m.id, m))
+      return [...map.values()]
     })
-  } catch (error) {
-    alert('Failed to load movies. Please try again later.')
+
   } finally {
     loading.value = false
     initialLoading.value = false
   }
 }
 
-watch(page, (newPage) => {
-  fetchPopularMovies(newPage)
-}, { immediate: true })
+watch(page, (p) => fetchPopular(p), { immediate: true })
+
+const filteredMovies = computed(() => {
+  const list = props.movies || []
+
+  if (!props.search?.trim()) return list
+
+  const q = props.search.toLowerCase()
+
+  return list.filter(m =>
+    (m.title || '').toLowerCase().includes(q)
+  )
+})
 </script>

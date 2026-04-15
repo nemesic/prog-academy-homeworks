@@ -1,36 +1,36 @@
 <script setup>
-// filepath: d:\work\TailwindCSS\vue-project\src\context\FavoritesProvider.vue
-import { ref, provide, watch, defineEmits } from 'vue'
-
-const emit = defineEmits(['add', 'remove', 'clear'])
+import { ref, provide, watch } from 'vue'
 
 const favorites = ref([])
 
-try {
-  const saved = localStorage.getItem('favorites')
-  if (saved) favorites.value = JSON.parse(saved)
-} catch (e) {
-  // ignore
+const saved = localStorage.getItem('favorites')
+if (saved) {
+  try {
+    favorites.value = JSON.parse(saved)
+  } catch {
+    favorites.value = []
+  }
 }
 
-watch(favorites, (val) => {
-  localStorage.setItem('favorites', JSON.stringify(val))
-}, { deep: true })
+watch(
+  favorites,
+  (val) => {
+    // eslint-disable-next-line no-console
+    console.log('Favorites changed:', val)
+    localStorage.setItem('favorites', JSON.stringify(val))
+  },
+  { deep: true }
+)
 
 function addToFavorites(movie) {
+  if (!movie?.id) return
   if (!favorites.value.some(m => m.id === movie.id)) {
     favorites.value.push(movie)
-    emit('add', movie)
   }
 }
 
 function removeFromFavorites(id) {
-  const idx = favorites.value.findIndex(m => m.id === id)
-  if (idx !== -1) {
-    const removed = favorites.value[idx]
-    favorites.value.splice(idx, 1)
-    emit('remove', removed)
-  }
+  favorites.value = favorites.value.filter(m => m.id !== id)
 }
 
 function isFavorite(id) {
@@ -39,7 +39,6 @@ function isFavorite(id) {
 
 function clearFavorites() {
   favorites.value = []
-  emit('clear')
 }
 
 provide('favoritesContext', {
@@ -47,10 +46,10 @@ provide('favoritesContext', {
   addToFavorites,
   removeFromFavorites,
   isFavorite,
-  clearFavorites,
+  clearFavorites
 })
 </script>
 
 <template>
   <slot />
-</template>
+</template> 
