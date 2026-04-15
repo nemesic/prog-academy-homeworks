@@ -1,3 +1,5 @@
+/* @import "tailwindcss"; */
+
 .like-inside {
   z-index: 20;
   pointer-events: auto;
@@ -65,7 +67,6 @@
 .animate-pulse-heart {
   animation: pulse-heart 0.4s;
 }
-@import "tailwindcss";
 
 :root {
   --bg: #141414;

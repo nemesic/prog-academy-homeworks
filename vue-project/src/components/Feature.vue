@@ -2,43 +2,31 @@
   <main class="feature-section pt-8 pb-16">
     <div class="content-wrapper mx-auto px-4 md:px-10 max-w-275">
 
-      <!-- Genres -->
-      <div class="tags-list flex flex-wrap gap-x-6 gap-y-2 mb-10">
-        <span 
-          v-for="genre in genres" 
-          :key="genre"
-          class="text-2xl md:text-[29px] font-medium text-white tracking-wide"
-        >
+      <div class="tags-list flex flex-col gap-0.5 mb-4 sm:mb-6">
+        <span v-for="genre in genres" :key="genre" class="genre-mobile text-base sm:text-xl md:text-2xl font-semibold text-white leading-tight">
           {{ genre }}
         </span>
       </div>
 
-      <!-- Title -->
-      <h1 class="feature-title text-5xl md:text-6xl lg:text-7xl font-black text-white leading-none tracking-wide mb-8">
+      <h1 class="feature-title text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white leading-tight tracking-wide mb-2 sm:mb-4">
         {{ title }}
       </h1>
 
-      <!-- Details -->
-      <div class="details-row flex flex-col md:flex-row gap-4 md:gap-10 mb-8 text-white">
-        <span class="text-2xl md:text-3xl font-medium">{{ year }}</span>
-        <span class="text-2xl md:text-3xl font-medium">
-          Director: <span class="text-[#a7a6a6]">{{ director }}</span>
-        </span>
-        <span class="text-2xl md:text-3xl font-medium">
-          Seasons: <span class="text-[#a7a6a6]">{{ seasons }}</span> 
-          ({{ episodes.length }} Episodes)
-        </span>
+      <div class="details-row flex flex-col gap-0.5 mb-2 sm:mb-4">
+        <div class="details-row-typography flex items-center flex-wrap gap-0.5 mb-2" style="font-size: 1.25em;">
+          <span class="main-detail text-white font-semibold">{{ year }}</span>
+          <span class="main-detail text-white font-semibold">DIRECTOR: <span class="sub-detail font-normal text-white/80">{{ director }}</span></span>
+          <span class="main-detail text-white font-semibold">Seasons: <span class="sub-detail font-normal text-white/80">{{ seasons }} ({{ episodes.length }} Episodes)</span></span>
+        </div>
       </div>
 
-      <!-- Description -->
-      <div class="story-summary max-w-3xl mb-10">
-        <p class="text-lg md:text-2xl text-white/90 leading-relaxed">
+      <div class="story-summary max-w-xs sm:max-w-2xl mb-6 sm:mb-8">
+        <p class="desc-mobile text-xs sm:text-base md:text-lg text-white/90 leading-relaxed break-words">
           {{ description }}
         </p>
       </div>
 
-      <!-- Rating Stars -->
-      <div class="stars-rating flex gap-1 mb-12" aria-label="Movie rating">
+      <div class="stars-rating flex gap-1 mb-8" aria-label="Movie rating">
         <i
           v-for="index in maxRating"
           :key="index"
@@ -50,31 +38,42 @@
         ></i>
       </div>
 
-      <!-- Control Buttons -->
-      <div class="control-buttons flex flex-col sm:flex-row gap-4">
+      <div class="control-buttons flex flex-col sm:flex-row gap-3">
         <button 
           @click="showStreamAlert"
-          class="start-stream flex-1 sm:flex-none bg-[#e50914] hover:bg-[#f40613] active:scale-95 transition-all font-bold text-lg md:text-xl tracking-wider h-14 sm:h-14.5 px-10 rounded-xl flex items-center justify-center gap-3 shadow-lg shadow-red-600/50"
+          class="start-stream flex-1 sm:flex-none bg-[#e50914] hover:bg-[#f40613] active:scale-95 transition-all font-bold text-base md:text-lg tracking-wider h-12 sm:h-14 px-6 rounded-lg flex items-center justify-center gap-2 shadow-md shadow-red-600/40"
         >
           STREAM NOW
-          <img src="/img/play-icon.png" alt="play" class="w-6 h-6" />
+          <img src="/img/play-icon.png" alt="play" class="w-5 h-5" />
         </button>
-
         <button 
           type="button"
-          class="episodes-list flex-1 sm:flex-none border-2 border-white hover:border-white/90 bg-white/10 hover:bg-white/20 backdrop-blur-md h-14 sm:h-14.5 px-10 rounded-xl font-bold text-lg md:text-xl tracking-wider transition-all flex items-center justify-center cursor-default opacity-80"
-          disabled
+          class="episodes-list flex-1 sm:flex-none border-2 border-white hover:border-white/90 bg-white/10 hover:bg-white/20 backdrop-blur-md h-12 sm:h-14 px-6 rounded-lg font-bold text-base md:text-lg tracking-wider transition-all flex items-center justify-center cursor-pointer opacity-90"
+          @click="showEpisodes = true"
         >
           ALL EPISODES
         </button>
+        <teleport to="body">
+          <transition name="modal-fade">
+            <div v-if="showEpisodes" class="episodes-modal-clean animate-pop-in-dark">
+              <button @click="showEpisodes = false" class="close-btn-episodes-clean" aria-label="Close episodes modal">
+                <span class="close-x-episodes-clean">✕</span>
+              </button>
+              <h3 class="episodes-title-clean">All Episodes</h3>
+              <ul class="episodes-list-modal-clean custom-scrollbar">
+                <li v-for="(ep, idx) in episodes" :key="ep.title || idx" class="episode-item-clean">
+                  <span class="episode-num-clean">{{ idx + 1 }}.</span> <span class="episode-title-clean">{{ ep.title }}</span>
+                </li>
+              </ul>
+            </div>
+          </transition>
+        </teleport>
       </div>
-
-      <!-- Episodes Modal removed by user request -->
     </div>
-  </main>
-</template>
+    </main>
+    </template>
 
-<script setup>
+  <script setup>
 import { ref } from 'vue'
 
 const props = defineProps({
@@ -96,10 +95,12 @@ const props = defineProps({
   initialRating: { type: Number, default: 3 }
 })
 
+
 const emit = defineEmits(['update:rating'])
 
 const maxRating = 5
 const rating = ref(props.initialRating)
+const showEpisodes = ref(false)
 
 function setRating(val) {
   rating.value = val
@@ -109,12 +110,450 @@ function setRating(val) {
 function showStreamAlert() {
   alert('Streaming started')
 }
-
-
 </script>
 
-
 <style scoped>
+.episode-title {
+        font-weight: 500;
+        color: #fff;
+      }
+      @media (max-width: 600px) {
+        .episodes-modal {
+          min-width: 0;
+          max-width: 99vw;
+          padding: 1.2rem 0.7rem 1rem 0.7rem;
+          border-radius: 1rem;
+        }
+        .episodes-title {
+          font-size: 1.3rem;
+          margin-bottom: 1rem;
+        }
+        .episodes-list-modal {
+          max-height: 38vh;
+          gap: 0.4rem;
+        }
+        .episode-item {
+          font-size: 0.97em;
+          padding: 8px 10px;
+          border-radius: 0.7em;
+        }
+        .episode-num {
+          font-size: 1em;
+        }
+      }
+
+.episodes-modal-clean {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: linear-gradient(135deg, #23272f 60%, #181a20 100%);
+  color: #f3f3f3;
+  border-radius: 20px;
+  padding: 2.2rem 1.5rem 1.5rem 1.5rem;
+  min-width: 320px;
+  max-width: 95vw;
+  max-height: 80vh;
+  box-shadow: 0 8px 32px #0008, 0 2px 8px #e5091440;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 9999;
+  overflow: hidden;
+}
+.close-btn-episodes-clean {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 38px;
+  height: 38px;
+  background: #f3f3f3;
+  color: #e50914;
+  border: none;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.18s, color 0.18s, box-shadow 0.18s;
+  box-shadow: 0 2px 8px #e5091420;
+  z-index: 2;
+  outline: none;
+  padding: 0;
+  line-height: 1;
+}
+.close-x-episodes-clean {
+  font-size: 1.7rem;
+  display: block;
+  color: #e50914;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  line-height: 38px;
+  transition: color 0.18s, transform 0.18s;
+}
+.close-btn-episodes-clean:hover, .close-btn-episodes-clean:focus {
+  background: #e50914;
+  box-shadow: 0 4px 16px #e5091440;
+}
+.close-btn-episodes-clean:hover .close-x-episodes-clean, .close-btn-episodes-clean:focus .close-x-episodes-clean {
+  color: #fff;
+  transform: rotate(90deg) scale(1.08);
+}
+.episodes-title-clean {
+  color: #e50914;
+  font-size: 2rem;
+  font-weight: 900;
+  margin-bottom: 1.3rem;
+  letter-spacing: 0.01em;
+  text-align: center;
+  font-family: 'Inter', sans-serif;
+}
+.episodes-list-modal-clean {
+  width: 100%;
+  max-height: 44vh;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+  margin-bottom: 0.2rem;
+}
+  .episode-item-clean {
+    background: #23272f;
+    border-radius: 12px;
+    padding: 12px 18px;
+    color: #f3f3f3;
+    font-size: 1.08rem;
+    font-family: 'Inter', sans-serif;
+    box-shadow: 0 1.5px 8px #e5091420;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 500;
+    transition: background 0.18s;
+  }
+  .episode-item-clean:hover {
+    background: #23272fbb;
+  }
+  .episode-num-clean {
+    font-weight: 700;
+    color: #e50914;
+    margin-right: 8px;
+    font-size: 1.13rem;
+  }
+  .episode-title-clean {
+    font-weight: 500;
+    color: #f3f3f3;
+  }
+@media (max-width: 600px) {
+  .episodes-modal-clean {
+    min-width: 0;
+    max-width: 99vw;
+    padding: 1.1rem 0.5rem 0.7rem 0.5rem;
+    border-radius: 1rem;
+  }
+  .episodes-title-clean {
+    font-size: 1.2rem;
+    margin-bottom: 0.7rem;
+  }
+  .episodes-list-modal-clean {
+    max-height: 38vh;
+    gap: 0.4rem;
+  }
+  .episode-item-clean {
+    font-size: 0.97em;
+    padding: 8px 10px;
+    border-radius: 0.7em;
+  }
+  .episode-num-clean {
+    font-size: 1em;
+  }
+}
+      @keyframes fadeInModalBg {
+        from { opacity: 0; }
+        to { opacity: 1; }
+      }
+      @keyframes popInModal {
+        from { transform: scale(0.92); opacity: 0.7; }
+        to { transform: scale(1); opacity: 1; }
+      }
+      .close-btn-episodes {
+        position: absolute;
+        top: 18px;
+        right: 18px;
+        width: 44px;
+        height: 44px;
+        background: rgba(229,9,20,0.12);
+        color: #e50914;
+        border: none;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: background 0.22s, color 0.22s, transform 0.18s, box-shadow 0.22s;
+        box-shadow: 0 2px 8px #e5091440;
+        z-index: 2;
+        outline: none;
+        padding: 0;
+        line-height: 1;
+      }
+      .close-x-episodes {
+        font-size: 2rem;
+        display: block;
+        transition: transform 0.22s cubic-bezier(.4,0,.2,1), color 0.22s;
+        color: #e50914;
+        text-shadow: 0 2px 8px #e5091440;
+        width: 100%;
+        height: 100%;
+        text-align: center;
+        line-height: 44px;
+      }
+      .close-btn-episodes:hover, .close-btn-episodes:focus {
+        background: #e50914;
+        box-shadow: 0 4px 16px #e5091440;
+        outline: none;
+      }
+      .close-btn-episodes:hover .close-x-episodes, .close-btn-episodes:focus .close-x-episodes {
+        color: #fff;
+        transform: rotate(90deg) scale(1.08);
+        text-shadow: 0 2px 16px #fff8;
+      }
+      .close-btn-episodes:active .close-x-episodes {
+        transform: scale(0.95);
+      }
+      .episodes-title {
+        color: #fff;
+        font-size: 2.1rem;
+        font-weight: 900;
+        margin-bottom: 1.7rem;
+        letter-spacing: 0.01em;
+        text-align: center;
+        font-family: 'Inter', sans-serif;
+        text-shadow: 0 2px 12px #000a;
+      }
+      .episodes-list-modal {
+        width: 100%;
+        max-height: 44vh;
+        overflow-y: auto;
+        display: flex;
+        flex-direction: column;
+        gap: 0.7rem;
+        margin-bottom: 0.2rem;
+      }
+      .episode-item {
+        background: rgba(255,255,255,0.08);
+        border-radius: 14px;
+        padding: 12px 18px;
+        color: #fff;
+        font-size: 1.08rem;
+        font-family: 'Inter', sans-serif;
+        box-shadow: 0 1.5px 8px #e5091420;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-weight: 500;
+      }
+      .episode-num {
+        font-weight: 700;
+        color: #e50914;
+        margin-right: 8px;
+        font-size: 1.13rem;
+      }
+      .episode-title {
+        font-weight: 500;
+        color: #fff;
+      }
+      @media (max-width: 600px) {
+        .episodes-modal {
+          min-width: 0;
+          max-width: 99vw;
+          padding: 1.2rem 0.7rem 1rem 0.7rem;
+          border-radius: 1rem;
+        }
+        .episodes-title {
+          font-size: 1.3rem;
+          margin-bottom: 1rem;
+        }
+        .episodes-list-modal {
+          max-height: 38vh;
+          gap: 0.4rem;
+        }
+        .episode-item {
+          font-size: 0.97em;
+          padding: 8px 10px;
+          border-radius: 0.7em;
+        }
+        .episode-num {
+          font-size: 1em;
+        }
+      }
+
+.genre-mobile {
+  word-break: break-word;
+  white-space: pre-line;
+}
+.desc-mobile {
+  word-break: break-word;
+  white-space: pre-line;
+}
+@media (max-width: 600px) {
+.details-row-typography .main-detail:not(:first-child)::before {
+  content: '|';
+  color: #fff;
+  opacity: 0.7;
+  font-weight: 400;
+  margin: 0 10px;
+}
+  .feature-title {
+    font-size: 1.35rem !important;
+    margin-bottom: 0.5rem !important;
+  }
+  .tags-list {
+    gap: 0.1rem !important;
+    margin-bottom: 0.5rem !important;
+  }
+  .main-detail {
+    font-size: 0.98rem !important;
+    margin-bottom: 0.1rem !important;
+  }
+  .story-summary {
+    margin-bottom: 1.1rem !important;
+    max-width: 95vw !important;
+  }
+  .desc-mobile {
+    font-size: 0.93rem !important;
+    line-height: 1.35 !important;
+  }
+}
+@media (max-width: 600px) {
+  .feature-section {
+    padding-top: 18px;
+    padding-bottom: 24px;
+  }
+  .content-wrapper {
+    padding-left: 6px;
+    padding-right: 6px;
+    max-width: 100vw;
+  }
+  .tags-list {
+    gap: 6px 10px;
+    margin-bottom: 14px;
+    overflow-x: auto;
+    white-space: nowrap;
+    -webkit-overflow-scrolling: touch;
+  }
+  .tags-list span {
+    font-size: 15px;
+    padding-right: 6px;
+  }
+  .tags-list span:not(:last-child)::after {
+    padding-right: 6px;
+  }
+  .feature-title {
+    font-size: 1.5rem;
+    margin-bottom: 14px;
+    text-align: left;
+    word-break: break-word;
+  }
+  .details-row-typography {
+    font-size: 13px;
+    gap: 6px;
+    margin-bottom: 12px;
+    overflow-x: auto;
+    white-space: nowrap;
+    -webkit-overflow-scrolling: touch;
+  }
+  .details-row-typography .main-detail {
+    font-size: 13px;
+  }
+  .details-row-typography .sub-detail {
+    font-size: 12px;
+  }
+  .details-row-typography .main-detail:not(:last-child)::after {
+    font-size: 13px;
+    padding: 0 4px 0 2px;
+  }
+  .story-summary {
+    margin-bottom: 12px;
+    max-width: 100vw;
+  }
+  .story-summary p {
+    font-size: 13px;
+    line-height: 1.5;
+    text-align: left;
+  }
+  .stars-rating {
+    margin-bottom: 14px;
+    gap: 2px;
+  }
+  .stars-rating i {
+    font-size: 18px;
+  }
+  .control-buttons {
+    flex-direction: column;
+    gap: 8px;
+  }
+  .start-stream, .episodes-list {
+    font-size: 0.95rem;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    height: 38px;
+    min-height: 38px;
+    border-radius: 8px;
+  }
+  .start-stream img {
+    width: 18px;
+    height: 18px;
+  }
+}
+/* Genre tags: роздільник | */
+.tags-list span:not(:last-child)::after {
+  content: ' | ';
+  padding-right: 30px;
+  color: #ffffff;
+}
+.tags-list span {
+  margin-right: 0;
+  font-size: 29px;
+  font-weight: 500;
+  line-height: 100%;
+  letter-spacing: 0%;
+  text-align: left;
+  color: #ffffff;
+}
+.details-row-typography .main-detail:not(:last-child)::after {
+  content: ' | ';
+  color: #fff;
+  padding: 0 16px 0 8px;
+  font-weight: 400;
+  font-size: 30px;
+  opacity: 1;
+}
+.details-row-typography {
+  font-family: 'Inter', sans-serif;
+  font-size: 30px;
+  font-weight: 500;
+  color: #fff;
+  line-height: 100%;
+  letter-spacing: 0;
+}
+.details-row-typography .main-detail {
+  font-family: 'Inter', sans-serif;
+  font-size: 30px;
+  font-weight: 500;
+  color: #fff;
+  line-height: 100%;
+  letter-spacing: 0;
+}
+.details-row-typography .sub-detail {
+  font-family: 'Inter', sans-serif;
+  font-size: 29px;
+  font-weight: 400;
+  color: #A7A6A6;
+  line-height: 100%;
+  letter-spacing: 0;
+}
 
 @keyframes fadeInModalBg {
   0% { opacity: 0; }
@@ -134,13 +573,22 @@ function showStreamAlert() {
   box-shadow: 0 0 0 6px #e50914cc, 0 0 32px 8px #e50914cc, 0 18px 64px 0 #e5091440, 0 2px 8px #fff2;
 }
 
-.animate-pop-in {
-  animation: pop-in 0.5s cubic-bezier(.4,0,.2,1);
+.animate-pop-in-dark {
+  animation: pop-in-dark 1s cubic-bezier(.4,0,.2,1);
 }
-@keyframes pop-in {
-  0% { opacity: 0; transform: scale(0.92); }
-  80% { opacity: 1; transform: scale(1.04); }
-  100% { opacity: 1; transform: scale(1); }
+@keyframes pop-in-dark {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -60%) scale(0.92);
+  }
+  60% {
+    opacity: 1;
+    transform: translate(-50%, -48%) scale(1.04);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
 }
 .animate-bounce-short {
   animation: bounce-short 0.7s;

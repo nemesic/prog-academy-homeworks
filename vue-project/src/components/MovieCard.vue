@@ -1,38 +1,19 @@
 <template>
-  <div
-    class="movie-card group relative cursor-pointer rounded-2xl overflow-hidden shadow-lg bg-[#18181c] movie-card-hover transition-all duration-300 hover:shadow-2xl hover:-translate-y-2 hover:scale-[1.07]"
-    style="width: 164px; min-width: 164px; max-width: 164px; height: 278px; padding: 8px 0 0 0;"
-    @click.self="selectMovie"
-  >
-    <div class="w-full h-64 flex items-center justify-center bg-[#222] rounded-2xl overflow-hidden relative group/image">
-      <img
-        :src="img"
-        :alt="title"
-        class="w-full h-64 object-cover rounded-2xl shadow-xl transition-transform duration-300 group-hover/image:scale-110 group-hover/image:shadow-2xl"
-        draggable="false"
-        @error="e => e.target.style.display = 'none'"
-        @click="selectMovie"
-      />
-      <i
-        :class="['fa-heart', fav ? 'fa-solid' : 'fa-regular']"
-        @click.stop="toggleFavorite"
-        :style="{
-          position: 'absolute',
-          top: '12px',
-          right: '12px',
-          color: fav ? 'red' : 'white',
-          cursor: 'pointer',
-          fontSize: '22px',
-          zIndex: 30,
-          filter: fav ? 'drop-shadow(0 0 8px #e50914cc)' : 'drop-shadow(0 2px 12px #fff)'
-        }"
-        aria-label="Add to favorites"
-      />
+  <div class="moviecard" :style="cardStyle" @click="selectMovie">
+    <div class="moviecard-img-wrap">
+      <img :src="img" :alt="title" class="moviecard-img" @error="onImgError">
+      <button class="moviecard-fav" :class="{ active: fav }" @click.stop="toggleFavorite">
+        <svg viewBox="0 0 24 24" width="22" height="22"><path :fill="fav ? '#e50914' : '#fff'" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41 0.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+      </button>
+    </div>
+    <div class="moviecard-bottom">
+      <span class="moviecard-title">{{ title }}</span>
     </div>
   </div>
 </template>
+
 <script setup>
-import { inject, computed } from 'vue'
+import { inject, computed, ref } from 'vue'
 
 const props = defineProps({
   img: String,
@@ -40,6 +21,11 @@ const props = defineProps({
   movie: Object,
   onSelect: Function
 })
+
+const fallbackImg = ref('/img/placeholder.png')
+function onImgError(e) {
+  e.target.src = fallbackImg.value
+}
 
 const favoritesContext = inject('favoritesContext')
 const fav = computed(() => favoritesContext?.favorites?.value?.some(m => m.id === props.movie?.id) ?? false)
@@ -56,4 +42,95 @@ function toggleFavorite() {
 function selectMovie() {
   props.onSelect?.(props.movie)
 }
+
+const cardStyle = computed(() => {
+  if (window.innerWidth <= 480) {
+    return 'width: 110px; min-width: 110px; max-width: 110px; height: 170px; padding: 4px 0 0 0;'
+  }
+  if (window.innerWidth <= 700) {
+    return 'width: 130px; min-width: 130px; max-width: 130px; height: 210px; padding: 6px 0 0 0;'
+  }
+  return 'width: 164px; min-width: 164px; max-width: 164px; height: 278px; padding: 8px 0 0 0;'
+})
 </script>
+
+<style scoped>
+.moviecard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: #181818;
+  border-radius: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: box-shadow .2s;
+}
+.moviecard:hover {
+  box-shadow: 0 4px 16px rgba(0,0,0,0.18);
+}
+.moviecard-img-wrap {
+  width: 100%;
+  height: 80%;
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+.moviecard-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-top-left-radius: 1rem;
+  border-top-right-radius: 1rem;
+  background: #222;
+}
+.moviecard-fav {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  background: rgba(24,24,24,0.7);
+  border: none;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background .2s;
+  z-index: 2;
+}
+.moviecard-fav.active {
+  background: #fff2;
+}
+.moviecard-bottom {
+  width: 100%;
+  min-height: 36px;
+  background: linear-gradient(0deg, #181818 90%, #181818cc 100%, transparent 100%);
+  border-bottom-left-radius: 1rem;
+  border-bottom-right-radius: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-bottom: 4px;
+}
+.moviecard-title {
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 500;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 80px;
+}
+@media (max-width: 700px) {
+  .moviecard-title { max-width: 60px; font-size: 0.93rem; }
+  .moviecard-bottom { padding-bottom: 4px; }
+}
+@media (max-width: 480px) {
+  .moviecard-title { max-width: 44px; font-size: 0.85rem; }
+  .moviecard-bottom { padding-bottom: 2px; }
+}
+</style>

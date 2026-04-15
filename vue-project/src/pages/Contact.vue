@@ -1,7 +1,5 @@
 <template>
   <div class="contact-page min-h-screen pt-20 pb-16 px-4 text-white">
-
-    <!-- Toast -->
     <transition name="toast">
       <div
         v-if="success"
@@ -14,14 +12,12 @@
       </div>
     </transition>
 
-    <!-- Header -->
-    <header class="header">
+    <div class="admin-header animate-fade-in">
       <h1>Get in Touch</h1>
       <p>We’d love to hear from you. Send us a message.</p>
-    </header>
+    </div>
 
-    <!-- Form -->
-    <form @submit.prevent="handleSubmit" class="form">
+    <form @submit.prevent="handleSubmit" class="form animate-fade-in">
 
       <div class="field">
         <label>Name</label>
@@ -93,23 +89,47 @@ function handleSubmit() {
   gap: 28px;
 }
 
-/* HEADER */
-.header {
+.admin-header {
+  margin: 0 auto 2.5rem auto;
+  max-width: 48rem;
+  background: none;
+  border: none;
+  box-shadow: none;
+  border-radius: 0;
+  padding: 0;
   text-align: center;
-  max-width: 520px;
+  position: static;
+  z-index: 1;
+  overflow: visible;
+  transition: none;
 }
-
-.header h1 {
-  font-size: 42px;
+.admin-header h1 {
+  font-size: 3.2rem;
   font-weight: 900;
+  letter-spacing: 0.4px;
+  color: #fff;
+  margin-bottom: 0.5rem;
+  text-align: center;
+}
+.admin-header p {
+  font-size: 15px;
+  line-height: 1.7;
+  color: rgba(255, 255, 255, 0.65);
+  letter-spacing: 0.4px;
+  max-width: 600px;
+  margin: 0 auto;
+  position: relative;
+}
+.admin-header p::after {
+  content: "";
+  display: block;
+  width: 60px;
+  height: 2px;
+  background: #e50914;
+  margin: 12px auto 0;
+  border-radius: 2px;
 }
 
-.header p {
-  opacity: 0.7;
-  margin-top: 8px;
-}
-
-/* FORM */
 .form {
   width: 100%;
   max-width: 520px;
@@ -123,7 +143,6 @@ function handleSubmit() {
   gap: 16px;
 }
 
-/* FIELD */
 .field {
   display: flex;
   flex-direction: column;
@@ -135,7 +154,6 @@ label {
   opacity: 0.7;
 }
 
-/* INPUT */
 input, textarea {
   background: rgba(255,255,255,0.08);
   border: 1px solid rgba(255,255,255,0.15);
@@ -151,48 +169,61 @@ input:focus, textarea:focus {
   box-shadow: 0 0 0 4px rgba(229,9,20,0.25);
 }
 
-/* ERROR */
 small {
   color: #ff4d4d;
-  font-size: 12px;
-}
+  font-size: 14px;
+} 
 
-/* BUTTON */
 .btn {
   margin-top: 6px;
   padding: 12px;
-  border-radius: 12px;
-  font-weight: 700;
-  background: linear-gradient(90deg, #e50914, #b0060f);
-  transition: 0.25s;
+  background: var(--red);
+  box-shadow: 0 4px 12px rgba(229, 9, 20, 0.45);
+  border: none;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: all 0.25s ease;
+  font-size: 0.95rem;
 }
-
 .btn:hover {
-  transform: translateY(-2px);
+  transform: translateY(-2px) scale(1.04);
   box-shadow: 0 10px 30px rgba(229,9,20,0.35);
+  filter: brightness(1.08); 
 }
 
-/* TOAST */
 .toast {
+  min-width: 180px;
+  max-width: 90vw;
+  background: rgba(0,0,0,0.92);
+  color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 24px rgba(229,9,20,0.13);
+  padding: 18px 32px 14px 32px;
+  text-align: center;
+  font-size: 1.1rem;
+  font-weight: 600;
+  border: 2px solid #e50914;
+  opacity: 1;
+  box-shadow: 0 8px 36px #e5091440;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.7em;
   position: fixed;
-  top: 30px;
+  top: 32px;
   left: 50%;
   transform: translateX(-50%);
-  background: rgba(0,0,0,0.9);
-  border: 1px solid #e50914;
-  padding: 14px 22px;
-  border-radius: 12px;
-  display: flex;
-  gap: 10px;
-  align-items: center;
-  font-weight: 600;
+  z-index: 99999;
 }
-
 .toast-icon {
-  color: #22c55e;
+  font-size: 24px;
+  color: limegreen;
+  margin-right: 8px;
+  filter: drop-shadow(0 0 6px #34d39944);
 }
 
-/* ANIMATION */
 .toast-enter-active,
 .toast-leave-active {
   transition: 0.3s;
@@ -201,5 +232,14 @@ small {
 .toast-leave-to {
   opacity: 0;
   transform: translateY(-10px) scale(0.95);
+}
+
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in {
+  animation: fade-in 0.6s cubic-bezier(.4,0,.2,1);
 }
 </style>  

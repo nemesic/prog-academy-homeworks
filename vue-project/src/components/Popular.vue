@@ -1,7 +1,6 @@
 <template>
   <section class="popular-section py-12" v-if="isLoggedIn">
     <div class="content-wrapper mx-auto px-4 md:px-10 max-w-5xl">
-      <!-- Header -->
       <div class="popular-header flex items-center justify-between mb-6">
         <h4 class="text-white uppercase text-2xl font-black tracking-[3px]">
           POPULAR THIS WEEK
@@ -21,42 +20,40 @@
           >
             <i class="fa-solid fa-chevron-right text-2xl text-white"></i>
           </button>
-        </div>
+        </div>  
       </div>
 
-      <!-- Loading -->
       <div v-if="initialLoading" class="py-20 text-center">
         <div class="inline-block w-8 h-8 border-4 border-white/30 border-t-red-600 rounded-full animate-spin"></div>
         <p class="text-white text-lg mt-4">Loading popular movies...</p>
       </div>
 
-      <!-- Swiper + Load More wrapper -->
-      <div v-else class="mx-auto" style="max-width:1055px;">
-        <Swiper
-          class="shows-row"
-          :modules="[Navigation, Autoplay]"
-          @swiper="setSwiperInstance"
-          :spaceBetween="24"
-          :breakpoints="breakpoints"
-          :autoplay="{ delay: 3200, disableOnInteraction: false }"
-          aria-label="Popular movies slider"
-        >
-          <SwiperSlide v-for="movie in filteredMovies" :key="movie.id">
-            <MovieCard
-              :img="movie.img"
-              :title="movie.title"
-              :movie="movie"
-              :onSelect="onSelectMovie"
-            />
-          </SwiperSlide>
-        </Swiper>
-        <!-- Load More (идеально по центру под слайдером) -->
-        <div class="flex justify-center mt-10">
+      <div v-else class="popular-slider-wrapper flex flex-col items-center w-full">
+        <div class="w-full" style="max-width:1055px;">
+          <Swiper
+            class="shows-row"
+            :modules="[Navigation, Autoplay]"
+            @swiper="setSwiperInstance"
+            :spaceBetween="24"
+            :breakpoints="breakpoints"
+            :autoplay="{ delay: 3200, disableOnInteraction: false }"
+            aria-label="Popular movies slider"
+          >
+            <SwiperSlide v-for="movie in filteredMovies" :key="movie.id">
+              <MovieCard
+                :img="movie.img"
+                :title="movie.title"
+                :movie="movie"
+                :onSelect="onSelectMovie"
+              />
+            </SwiperSlide>
+          </Swiper>
+        </div>
+        <div class="flex justify-center mt-10 w-full">
           <button 
             @click="loadMore" 
             :disabled="loading"
             class="load-more-btn px-10 py-4 min-w-[180px] bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 disabled:opacity-70 font-bold text-white rounded-2xl text-lg drop-shadow-lg shadow-red-600/40 transition-all active:scale-95 flex items-center gap-3 ring-2 ring-red-700/30 focus:outline-none focus:ring-4"
-            style="margin: 0 auto;"
           >
             <span v-if="loading" class="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></span>
             {{ loading ? 'Loading...' : 'Load More' }}
@@ -64,7 +61,6 @@
         </div>
       </div>
 
-      <!-- No movies -->
       <div v-if="!filteredMovies.length && !initialLoading" 
            class="text-center py-12 text-red-500 text-xl">
         No movies found.

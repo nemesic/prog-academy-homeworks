@@ -14,7 +14,7 @@
       </div>
     </transition>
 
-    <div class="admin-header mx-auto max-w-3xl bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl p-10 md:p-14 text-center mb-12 shadow-2xl animate-fade-in">
+    <div class="admin-header animate-fade-in mx-auto max-w-3xl bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl p-10 md:p-14 text-center mb-12 shadow-2xl">
       <h1 class="text-5xl md:text-6xl font-black tracking-wide leading-none mb-6">
         Pricing Plans
       </h1>
@@ -239,52 +239,43 @@ function featureRowHighlight(feature) {
 .admin-header {
   margin: 0 auto 2.5rem auto;
   max-width: 48rem;
-  background: linear-gradient(120deg, rgba(255,255,255,0.10) 0%, rgba(24,24,28,0.85) 100%);
-  border: 1.5px solid rgba(255,255,255,0.10);
-  box-shadow: 0 4px 32px rgba(229,9,20,0.10), 0 1.5px 8px rgba(229,9,20,0.08);
-  backdrop-filter: blur(18px);
-  border-radius: 1.5rem;
-  padding: 2.5rem 2rem 2rem 2rem;
+  background: none;
+  border: none;
+  box-shadow: none;
+  border-radius: 0;
+  padding: 0;
   text-align: center;
-  position: relative;
+  position: static;
   z-index: 1;
-  overflow: hidden;
-  transition: box-shadow 0.5s cubic-bezier(.4,0,.2,1), background 0.5s cubic-bezier(.4,0,.2,1), border 0.5s cubic-bezier(.4,0,.2,1), transform 0.5s cubic-bezier(.4,0,.2,1);
+  overflow: visible;
+  transition: none;
 }
-.admin-header::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: inherit;
-  z-index: -1;
-  filter: blur(2px) brightness(1.07);
-  opacity: 0.85;
-  pointer-events: none;
-}
+
 .admin-header h1 {
-  font-size: 2.5rem;
+  font-size: 3.2rem;
   font-weight: 900;
-  margin-bottom: 0.7em;
+  letter-spacing: 0.4px;
   color: #fff;
-  letter-spacing: 0.01em;
-  font-family: 'Inter', sans-serif;
-  text-shadow: 0 4px 12px rgba(0,0,0,0.7);
-  line-height: 1;
-}
-@media (min-width: 768px) {
-  .admin-header h1 {
-    font-size: 3.5rem;
-  }
-}
-@media (min-width: 1024px) {
-  .admin-header h1 {
-    font-size: 4rem;
-  }
+  margin-bottom: 0.5rem;
+  text-align: center;
 }
 .admin-header p {
-  font-size: 1.1rem;
-  color: #aaa;
-  margin: 0;
+  font-size: 15px;
+  line-height: 1.7;
+  color: rgba(255, 255, 255, 0.65);
+  letter-spacing: 0.4px;
+  max-width: 600px;
+  margin: 0 auto;
+  position: relative;
+}
+.admin-header p::after {
+  content: "";
+  display: block;
+  width: 60px;
+  height: 2px;
+  background: #e50914;
+  margin: 12px auto 0;
+  border-radius: 2px;
 }
 
 :root {

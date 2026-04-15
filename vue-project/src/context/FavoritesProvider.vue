@@ -15,7 +15,6 @@ if (saved) {
 watch(
   favorites,
   (val) => {
-    // eslint-disable-next-line no-console
     console.log('Favorites changed:', val)
     localStorage.setItem('favorites', JSON.stringify(val))
   },

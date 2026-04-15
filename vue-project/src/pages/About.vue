@@ -1,18 +1,14 @@
 <template>
   <div class="page">
-
-    <!-- HEADER -->
-    <section class="header">
+    <div class="admin-header animate-fade-in">
       <h1>About Movie App</h1>
       <p>
         A modern Vue Netflix-style app with API integration, favorites and admin tools.
       </p>
-    </section>
+    </div>
+    <section class="grid animate-fade-in">  
 
-    <!-- GRID -->
-    <section class="grid">
-
-      <div class="card">
+      <div class="card animate-fade-in">
         <div class="icon red">i</div>
         <h2>About</h2>
         <p>
@@ -54,33 +50,53 @@
 </template>
 
 <style scoped>
-/* PAGE */
 .page {
   min-height: 100vh;
   padding: 90px 16px 60px;
   color: white;
 }
 
-/* HEADER */
-.header {
-  max-width: 720px;
-  margin: 0 auto 40px;
+.admin-header {
+  margin: 0 auto 2.5rem auto;
+  max-width: 48rem;
+  background: none;
+  border: none;
+  box-shadow: none;
+  border-radius: 0;
+  padding: 0;
+  text-align: center;
+  position: static;
+  z-index: 1;
+  overflow: visible;
+  transition: none;
+}
+.admin-header h1 {
+  font-size: 3.2rem;
+  font-weight: 900;
+  letter-spacing: 0.4px;
+  color: #fff;
+  margin-bottom: 0.5rem;
   text-align: center;
 }
-
-.header h1 {
-  font-size: 44px;
-  font-weight: 900;
+.admin-header p {
+  font-size: 15px;
+  line-height: 1.7;
+  color: rgba(255, 255, 255, 0.65);
+  letter-spacing: 0.4px;
+  max-width: 600px;
+  margin: 0 auto;
+  position: relative;
+}
+.admin-header p::after {
+  content: "";
+  display: block;
+  width: 60px;
+  height: 2px;
+  background: #e50914;
+  margin: 12px auto 0;
+  border-radius: 2px;
 }
 
-.header p {
-  margin-top: 10px;
-  opacity: 0.7;
-  font-size: 16px;
-  line-height: 1.6;
-}
-
-/* GRID */
 .grid {
   max-width: 1100px;
   margin: 0 auto;
@@ -89,7 +105,6 @@
   gap: 22px;
 }
 
-/* CARD */
 .card {
   background: rgba(255,255,255,0.06);
   border: 1px solid rgba(255,255,255,0.12);
@@ -105,7 +120,6 @@
   box-shadow: 0 20px 50px rgba(229,9,20,0.15);
 }
 
-/* ICON */
 .icon {
   width: 44px;
   height: 44px;
@@ -121,7 +135,6 @@
 .yellow { background: #fbbf24; color: black; }
 .blue { background: #3b82f6; }
 
-/* TEXT */
 .card h2 {
   font-size: 18px;
   font-weight: 800;
@@ -134,7 +147,6 @@
   line-height: 1.6;
 }
 
-/* LIST */
 ul {
   margin-top: 10px;
   padding-left: 0;
@@ -147,7 +159,6 @@ li {
   font-size: 14px;
 }
 
-/* RESPONSIVE */
 @media (max-width: 900px) {
   .grid {
     grid-template-columns: 1fr;
@@ -156,5 +167,14 @@ li {
   .header h1 {
     font-size: 32px;
   }
+}
+
+.animate-fade-in {
+  animation: fade-in 0.6s cubic-bezier(.4,0,.2,1);
+}
+
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 </style>

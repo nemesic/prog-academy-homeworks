@@ -8,7 +8,6 @@
     </h3>
 
     <div class="space-y-5">
-      <!-- TITLE -->
       <div>
         <input
           v-model.trim="form.title"
@@ -23,7 +22,6 @@
         </span>
       </div>
 
-      <!-- IMAGE -->
       <div>
         <input
           v-model.trim="form.img"
@@ -108,6 +106,31 @@ function handleSubmit() {
 </script>
 
 <style scoped>
+@media (max-width: 600px) {
+  .create-form {
+    padding: 18px 6px 18px 6px;
+    max-width: 98vw;
+    border-radius: 12px;
+  }
+  .input {
+    padding: 10px 12px;
+    font-size: 15px;
+    border-radius: 8px;
+  }
+  .btn {
+    padding: 11px;
+    font-size: 1rem;
+    border-radius: 8px;
+    margin-top: 16px;
+  }
+  h3 {
+    font-size: 1.1rem;
+    margin-bottom: 16px;
+  }
+  .error-msg {
+    font-size: 12px;
+  }
+}
 .input {
   width: 100%;
   background: rgba(255,255,255,0.10);

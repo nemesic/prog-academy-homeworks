@@ -1,50 +1,63 @@
 <template>
-  <header class="main-header py-10 md:py-14">
-    <div class="content-wrapper mx-auto px-4 md:px-10 flex flex-wrap items-center justify-between gap-6">
+  <header class="main-header py-7 md:py-14">
+    <div class="content-wrapper mx-auto px-2 md:px-10 flex flex-wrap items-center justify-between gap-4 md:gap-6">
 
-      <div class="header-left flex items-center gap-8 flex-1 md:flex-none">
-        <div class="netflix-brand">
+      <div class="header-left flex items-center gap-4 md:gap-8 flex-1 md:flex-none">
+        <div class="netflix-brand flex items-end gap-2 md:gap-4" style="align-items:flex-end;">
           <router-link to="/">
-            <img src="/img/netflix-logo.png" alt="Netflix" class="max-w-35 md:max-w-39" />
+            <img src="/img/netflix-logo.png" alt="Netflix" 
+              class="logo-img max-w-[110px] sm:max-w-[130px] md:max-w-[130px] lg:max-w-[156px] h-auto"
+              style="transform:translateY(4px);max-height:32px;"
+            />
           </router-link>
+          <span v-if="isLoggedIn" class="header-date text-white font-netflix-date text-lg ml-4 hidden sm:inline-block" style="margin-top:0;position:relative;line-height:1.1;">Friday July 8th</span>
         </div>
-        <span
-          v-if="isLoggedIn"
-          class="date-text hidden lg:block font-[Kyiv*Type Titling] font-medium text-[24px] leading-[100%] tracking-[0] text-white/80"
-        >
-          Friday, July 8th
-        </span>
       </div>
-      
-      <nav v-if="isLoggedIn" class="nav-menu flex gap-6 md:gap-8 text-white/80 text-xl font-medium">
-        <router-link to="/" class="same-class"> HOME </router-link>
-        <router-link to="/about" class="same-class">ABOUT</router-link>
-        <router-link to="/price" class="same-class">PRICE</router-link>
-        <router-link to="/contact" class="same-class">CONTACT</router-link>
-        <router-link to="/admin" class="same-class">ADMIN</router-link>
+
+      <nav v-if="isLoggedIn" class="nav-menu hidden sm:flex gap-3 md:gap-8 text-white/80 text-base md:text-xl font-medium">
+        <router-link to="/" class="same-class px-1 md:px-2"> HOME </router-link>
+        <router-link to="/about" class="same-class px-1 md:px-2">ABOUT</router-link>
+        <router-link to="/price" class="same-class px-1 md:px-2">PRICE</router-link>
+        <router-link to="/contact" class="same-class px-1 md:px-2">CONTACT</router-link>
+        <router-link to="/admin" class="same-class px-1 md:px-2">ADMIN</router-link>
       </nav>
 
-      <div class="header-right flex items-center gap-4 md:gap-6">
+      <div v-if="isLoggedIn" class="burger-mobile-only flex items-center w-full justify-center relative" style="display: flex; align-items: center;">
+        <button @click="mobileMenuOpen = !mobileMenuOpen" aria-label="Open menu" class="burger-btn mobile-burger-btn focus:outline-none relative z-50" :aria-expanded="mobileMenuOpen">
+          <span :class="{'burger-bar': true, 'open': mobileMenuOpen}"></span>
+          <span :class="{'burger-bar': true, 'open': mobileMenuOpen}"></span>
+          <span :class="{'burger-bar': true, 'open': mobileMenuOpen}"></span>
+        </button>
+        <transition name="menu-fade">
+          <nav v-if="mobileMenuOpen" class="mobile-nav-menu shadow-2xl rounded-b-2xl border-t border-white/10 animate-fade-in-down flex flex-col items-center pt-8 pb-4 px-4 gap-2 relative">
+            <router-link to="/" class="mobile-link" @click="closeMobileMenu">HOME</router-link>
+            <router-link to="/about" class="mobile-link" @click="closeMobileMenu">ABOUT</router-link>
+            <router-link to="/price" class="mobile-link" @click="closeMobileMenu">PRICE</router-link>
+            <router-link to="/contact" class="mobile-link" @click="closeMobileMenu">CONTACT</router-link>
+            <router-link to="/admin" class="mobile-link" @click="closeMobileMenu">ADMIN</router-link>
+          </nav>
+        </transition>
+      </div>
 
-        <template v-if="!isLoggedIn">
-          <button
-            @click="openLogin"
-            class="login-nav-btn px-6 py-2.5 text-lg font-medium text-white/80 hover:text-white transition-all"
-          >
-            Login
-          </button>
-          <ModalLogin
-            v-if="showModal"
-            @login="handleLoginSuccess"
-            @close="showModal = false"
-          />
-        </template>
+      <template v-if="!isLoggedIn">
+        <button
+          @click="openLogin"
+          class="same-class"
+          style="background:none;border:none;padding:0;margin:0;cursor:pointer;"
+        >
+          Login
+        </button>
+        <ModalLogin
+          v-if="showModal"
+          @login="handleLoginSuccess"
+          @close="showModal = false"
+        />
+      </template>
 
-        <template v-else>
-          <!-- Search, Favorites, Avatar: одинаковый размер и увеличенный padding -->
-          <div style="display:flex;align-items:center;">
-            <!-- Search Icon + Input -->
-            <div style="position:relative;display:flex;align-items:center;">
+      <template v-else>
+        <div style="display:flex;align-items:center;">
+          <div style="position:relative;display:flex;align-items:center;gap:2px;">
+            <transition name="fade-search" @after-leave="clearSearchData">
               <div v-if="searchOpen" style="display:flex;align-items:center;gap:4px;">
                 <input
                   ref="searchInput"
@@ -60,6 +73,7 @@
                   autocomplete="off"
                   :style="searchInputStyle"
                   @focus="onSearchFocus"
+                  style="max-width:120px;min-width:0;"
                 />
                 <button
                   class="search-btn-anim"
@@ -80,29 +94,31 @@
                   ></i>
                 </button>
               </div>
-              <button
-                v-if="!searchOpen"
-                class="search-icon"
-                aria-label="Search"
-                @click="toggleSearch"
-                :aria-pressed="searchOpen"
-                style="background:none;border:none;padding:0;margin:0;cursor:pointer;width:48px;height:48px;display:flex;align-items:center;justify-content:center;z-index:1;"
-                @mouseenter="searchIconHover = true"
-                @mouseleave="searchIconHover = false"
-              >
-                <i
-                  class="fa-solid fa-magnifying-glass"
-                  :style="{
-                    color: searchIconHover ? '#e50914' : '#fff',
-                    fontSize: '28px',
-                    width: '44px',
-                    height: '44px',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center'
-                  }"
-                ></i>
-              </button>
+            </transition>
+            <button
+              v-if="!searchOpen"
+              class="search-icon"
+              aria-label="Search"
+              @click="toggleSearch"
+              :aria-pressed="searchOpen"
+              style="background:none;border:none;padding:0;margin:0;cursor:pointer;width:48px;height:48px;display:flex;align-items:center;justify-content:center;z-index:1;"
+              @mouseenter="searchIconHover = true"
+              @mouseleave="searchIconHover = false"
+            >
+              <i
+                class="fa-solid fa-magnifying-glass"
+                :style="{
+                  color: searchIconHover ? '#e50914' : '#fff',
+                  fontSize: '28px',
+                  width: '44px',
+                  height: '44px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center'
+                }"
+              ></i>
+            </button>
+            <transition name="fade-search">
               <div
                 v-if="searchOpen && (searchLoading || (searchValue && searchValue.length > 2 && moviesList.length))"
                 style="position:absolute;left:0;top:100%;width:100%;z-index:50;"
@@ -116,15 +132,15 @@
                   <div v-if="filteredMovies.length === 0" class="search-no-results" style="color:#e74c3c;padding:12px 0;text-align:center;">
                     No movies found
                   </div>
-                  <ul v-else class="search-list" style="padding:0;display:flex;flex-direction:column;gap:0;">
+                  <transition-group name="search-list-fade" tag="ul" class="search-list" style="padding:0;display:flex;flex-direction:column;gap:0;">
                     <li
                       v-for="movie in filteredMovies"
                       :key="movie.id"
                       @mousedown.prevent="selectMovie(movie)"
-                      style="display:flex;align-items:center;gap:12px;padding:6px 10px;cursor:pointer;transition:background 0.18s;"
+                      style="display:flex;align-items:center;gap:12px;padding:6px 10px;cursor:pointer;transition:background 0.18s, box-shadow 0.18s, transform 0.18s; border-radius:8px;"
                       @mouseenter="hoveredMovie = movie.id"
                       @mouseleave="hoveredMovie = null"
-                      :style="{ background: hoveredMovie === movie.id ? 'rgba(229,9,20,0.07)' : 'transparent' }"
+                      :style="{ background: hoveredMovie === movie.id ? 'rgba(229,9,20,0.13)' : 'rgba(255,255,255,0.03)', boxShadow: hoveredMovie === movie.id ? '0 2px 12px #e5091440' : 'none', transform: hoveredMovie === movie.id ? 'scale(1.03)' : 'none' }"
                     >
                       <img
                         :src="movie.img"
@@ -138,12 +154,11 @@
                         </span>
                       </div>
                     </li>
-                  </ul>
+                  </transition-group>
                 </div>
               </div>
-            </div>
-            <!-- Favorites Heart Icon (simple white heart, no blur, no circle, red on hover) -->
-            <div class="favorites-menu" ref="dropdownRef">
+            </transition>
+            <div class="favorites-menu" ref="dropdownRef" style="margin-left:2px;">
               <button
                 type="button"
                 class="favorites-heart-btn"
@@ -183,7 +198,6 @@
                   <div class="favorites-panel-header">
                     <span class="favorites-title text-xl font-bold">Favorites</span>
                   </div>
-
                   <div v-if="!favorites.length" class="favorites-empty">
                     <i class="fa-regular fa-face-smile-beam text-red-500"></i>
                     <p class="empty-title">No favorites yet</p>
@@ -229,37 +243,40 @@
                 </div>
               </transition>
             </div>
-            <!-- Profile -->
-            <div class="profile-container" style="margin-left:18px;position:relative;width:54px;height:54px;">
-            <img
-            src="/img/avatar.png"
-            alt="profile"
-            @click="enlargeAvatar"
-            :class="['avatar-img', avatarScaled ? 'avatar-glow-ring' : '']"
-            style="width:54px;height:54px;z-index:2;position:relative;cursor:pointer;"
-          />
-        <transition name="avatar-ring-fade">
-        <span
-        v-if="avatarScaled"
-        class="avatar-animated-ring"
-        ></span>
-          </transition>
+            <div class="profile-container" style="margin-left:8px;position:relative;width:40px;height:40px;">
+              <img
+                src="/img/avatar.png"
+                alt="profile"
+                @click="enlargeAvatar"
+                :class="['avatar-img', avatarScaled ? 'avatar-glow-ring' : '']"
+                style="width:40px;height:40px;z-index:2;position:relative;cursor:pointer;"
+              />
+              <transition name="avatar-ring-fade">
+                <span
+                  v-if="avatarScaled"
+                  class="avatar-animated-ring"
+                  style="width:52px;height:52px;"
+                ></span>
+              </transition>
+            </div>
           </div>
-          </div>
-        </template>
-      </div>
+        </div>
+      </template>
+
     </div>
   </header>
 </template>
 
 <script setup>
 import { ref, inject, onMounted, nextTick, computed, onBeforeUnmount, watch } from 'vue'
+const mobileMenuOpen = ref(false)
+function closeMobileMenu() {
+  mobileMenuOpen.value = false
+}
 import ModalLogin from './ModalLogin.vue'
 import { movies as localMovies } from '../data/movies.js'
 
 
-
-// --- FAVORITES CONTEXT ---
 const favoritesContext = inject('favoritesContext')
 const favorites = computed(() => favoritesContext?.favorites?.value ?? [])
 const removeFromFavorites = favoritesContext?.removeFromFavorites
@@ -274,9 +291,6 @@ const emit = defineEmits(['update:search', 'update:isLoggedIn'])
 
 const showModal = ref(false)
 
-
-
-// ================= SEARCH =================
 const searchOpen = ref(false)
 const searchValue = ref(props.search || '')
 const searchInput = ref(null)
@@ -297,9 +311,12 @@ function toggleSearch() {
 }
 
 function closeSearch() {
-  searchOpen.value = false
-  // searchValue.value = '' // optionally clear
-  // movieAPI.value = []
+  searchOpen.value = false;
+}
+
+function clearSearchData() {
+  searchValue.value = '';
+  movieAPI.value = [];
 }
 
 function onSearchInput() {
@@ -322,8 +339,6 @@ function onSearchFocus(e) {
   }, 300);
 }
 
-
-// ================= FAVORITES DROPDOWN =================
 const favOpen = ref(false)
 const dropdownRef = ref(null)
 const favHeartHover = ref(false)
@@ -352,7 +367,6 @@ function handleWatch(movie) {
   favOpen.value = false
 }
 
-// ================= API SEARCH =================
 const movieAPI = ref([])
 const API_KEY = '9eee1c8a9ca4c5306eb86111905631a1'
 
@@ -428,10 +442,9 @@ const filteredMovies = computed(() => {
 })
 
 function selectMovie() {
-  closeSearch()
+  closeSearch();
 }
 
-// ================= AVATAR =================
 const avatarScaled = ref(false)
 function enlargeAvatar() {
   avatarScaled.value = true
@@ -442,7 +455,6 @@ function enlargeAvatar() {
   }, 300)
 }
 
-// ================= LOGIN =================
 function openLogin() {
   showModal.value = true
 }
@@ -452,9 +464,7 @@ function handleLoginSuccess() {
   showModal.value = false
 }
 
-// ================= ADAPTIVE SEARCH INPUT =================
 const searchInputStyle = computed(() => {
-  // Responsive width and font for search input
   if (typeof window !== 'undefined') {
     if (window.innerWidth <= 600) {
       return `
@@ -514,9 +524,297 @@ const searchInputStyle = computed(() => {
 </script>
 
 <style scoped>
+.fade-search-enter-active, .fade-search-leave-active {
+  transition: opacity 0.18s cubic-bezier(.4,0,.2,1), transform 0.22s cubic-bezier(.4,0,.2,1), box-shadow 0.22s cubic-bezier(.4,0,.2,1);
+}
+.fade-search-enter-from, .fade-search-leave-to {
+  opacity: 0;
+  transform: scale(0.96) translateY(10px);
+  background: #19191d !important;
+  border: 2px solid #e50914 !important;
+  color: #fff !important;
+  box-shadow: 0 6px 32px 0 #e5091440 !important;
+}
+.fade-search-enter-to, .fade-search-leave-from {
+  opacity: 1;
+  transform: scale(1) translateY(0);
+  background: #19191d !important;
+  border: 2px solid #e50914 !important;
+  color: #fff !important;
+  box-shadow: 0 2px 16px 0 #e5091420 !important;
+}
 
-/* Анімація glow при наведенні */
+.search-list-fade-enter-active, .search-list-fade-leave-active {
+  transition: all 0.32s cubic-bezier(.4,0,.2,1);
+}
+.search-list-fade-enter-from, .search-list-fade-leave-to {
+  opacity: 0;
+  transform: translateY(18px) scale(0.97);
+}
+.search-list-fade-enter-to, .search-list-fade-leave-from {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
 
+@media (min-width: 640px) {
+  .burger-mobile-only {
+    display: none !important;
+  }
+}
+@media (max-width: 639px) {
+  .main-header {
+    text-align: center;
+  }
+  .netflix-brand {
+    width: 100%;
+    justify-content: center;
+  }
+  .header-date {
+    display: none !important;
+  }
+  .mobile-burger-btn {
+    width: 54px !important;
+    height: 54px !important;
+    min-width: 54px !important;
+    min-height: 54px !important;
+    padding: 0 !important;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: rgba(24,24,28,0.98);
+    border-radius: 50%;
+    border: 2px solid #e50914;
+    box-shadow: 0 2px 16px #e5091440;
+    transition: box-shadow 0.2s, border-color 0.2s;
+    position: relative;
+  }
+  .burger-bar {
+    height: 5px !important;
+    border-radius: 3px !important;
+    margin: 6px 0 !important;
+    width: 32px !important;
+    background: linear-gradient(90deg,#e50914 0%,#fff 100%) !important;
+    display: block !important;
+    box-shadow: 0 1px 6px #e5091440;
+    transition: all 0.22s;
+  }
+  .burger-bar.open:nth-child(1) {
+    transform: translateY(11px) rotate(45deg);
+    background: #fff !important;
+  }
+  .burger-bar.open:nth-child(2) {
+    opacity: 0;
+  }
+  .burger-bar.open:nth-child(3) {
+    transform: translateY(-11px) rotate(-45deg);
+    background: #fff !important;
+  }
+  .burger-star {
+    display: block;
+  }
+}
+
+.logo-img {
+  max-width: 110px;
+  object-fit: contain;
+  height: auto;
+  vertical-align: bottom;
+}
+@media (min-width: 640px) {
+  .logo-img {
+    max-width: 130px;
+  }
+}
+@media (min-width: 768px) {
+  .logo-img {
+    max-width: 130px;
+  }
+}
+@media (min-width: 1024px) {
+  .logo-img {
+    max-width: 156px;
+  }
+}
+@media (min-width: 1280px) {
+  .logo-img {
+    max-width: 156px;
+  }
+}
+.burger-bar.open:nth-child(2) {
+  opacity: 0;
+}
+.burger-bar.open:nth-child(3) {
+  transform: translateY(-5.5px) rotate(-45deg);
+}
+
+.mobile-nav-menu {
+  position: absolute;
+  top: 54px;
+  left: 0;
+  width: 100vw;
+  background: linear-gradient(180deg, #18181c 90%, #e5091420 100%);
+  box-shadow: 0 8px 32px #0008;
+  z-index: 110;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 18px 0 12px 0;
+  gap: 2px;
+}
+.mobile-link {
+  color: #fff;
+  font-size: 17px;
+  font-weight: 600;
+  padding: 10px 0;
+  width: 100vw;
+  text-align: center;
+  transition: background 0.18s, color 0.18s;
+}
+.mobile-link:active, .mobile-link:hover {
+  background: #e50914;
+  color: #fff;
+}
+@media (max-width: 600px) {
+  .main-header {
+    padding-top: 12px !important;
+    padding-bottom: 10px !important;
+    min-height: 56px !important;
+  }
+  .content-wrapper {
+    gap: 2px !important;
+    padding-left: 6px !important;
+    padding-right: 6px !important;
+    min-width: 0 !important;
+    max-width: 100vw !important;
+  }
+  .header-left {
+    gap: 2px !important;
+    min-width: 0 !important;
+  }
+  .netflix-brand {
+    gap: 2px !important;
+    min-width: 0 !important;
+    align-items: flex-end !important;
+  }
+  .logo-img {
+    max-width: 92px !important;
+    min-width: 64px !important;
+    height: 28px !important;
+    transform: translateY(3px) !important;
+    margin-right: 2px !important;
+  }
+  .header-date, .date-text {
+    font-size: 12px !important;
+    padding-left: 2px !important;
+    margin-top: 2px !important;
+    line-height: 1.1 !important;
+  }
+  .burger-mobile-only {
+    margin-left: 4px !important;
+  }
+  .mobile-burger-btn {
+    width: 44px !important;
+    height: 44px !important;
+    min-width: 44px !important;
+    min-height: 44px !important;
+    padding: 0 !important;
+  }
+  .burger-bar {
+    height: 5px !important;
+    border-radius: 2.5px !important;
+    margin: 4px 0 !important;
+    width: 28px !important;
+    background: #fff !important;
+    display: block !important;
+    transition: all 0.22s;
+  }
+  .mobile-nav-menu {
+    top: 48px !important;
+    padding: 12px 0 8px 0 !important;
+    gap: 0 !important;
+  }
+  .mobile-link {
+    font-size: 15px !important;
+    padding: 8px 0 !important;
+    width: 100vw !important;
+  }
+  .nav-menu {
+    display: none !important;
+  }
+  .header-right {
+    gap: 2px !important;
+  }
+  .profile-container {
+    width: 28px !important;
+    height: 28px !important;
+    margin-left: 2px !important;
+  }
+  .profile-container img {
+    width: 28px !important;
+    height: 28px !important;
+  }
+  .avatar-animated-ring {
+    width: 34px !important;
+    height: 34px !important;
+  }
+  .favorites-menu {
+    margin-left: 2px !important;
+  }
+  .favorites-heart-btn, .favorites-trigger {
+    width: 28px !important;
+    height: 28px !important;
+  }
+  .favorites-heart-icon {
+    font-size: 16px !important;
+  }
+  .favorites-badge {
+    min-width: 16px !important;
+    font-size: 9px !important;
+    top: -5px !important;
+    right: -5px !important;
+    padding: 1px 4px !important;
+  }
+  .favorites-panel {
+    width: min(96vw, 260px) !important;
+    max-width: 96vw !important;
+    border-radius: 10px !important;
+    margin-top: 7px !important;
+  }
+  .favorites-panel-header {
+    padding: 0.7rem 0.7rem !important;
+    font-size: 0.9rem !important;
+  }
+  .favorites-list {
+    gap: 0.2rem !important;
+    padding: 0 0.3rem !important;
+  }
+  .favorites-item {
+    grid-template-columns: 32px minmax(0,1fr) 60px !important;
+    padding: 0.4rem 0.5rem !important;
+    border-radius: 0.5rem !important;
+  }
+  .favorites-item-img {
+    height: 44px !important;
+    width: 32px !important;
+    border-radius: 0.5rem !important;
+  }
+  .favorites-item-title {
+    font-size: 0.85rem !important;
+  }
+  .favorites-item-year {
+    font-size: 0.7rem !important;
+  }
+  .favorites-item-actions {
+    width: 60px !important;
+    gap: 0.2rem !important;
+  }
+  .favorites-watch-btn, .favorites-delete-btn {
+    font-size: 0.7rem !important;
+    padding: 0.2rem 0.3rem !important;
+    border-radius: 0.4rem !important;
+  }
+}
 .profile-container img {
   border-radius: 50%;
   transition: box-shadow 0.3s, transform 0.3s;
@@ -526,7 +824,6 @@ const searchInputStyle = computed(() => {
   transform: scale(1.08);
 }
 
-/* Пульсація при кліку */
  .avatar-glow-ring {
   animation: avatar-pulse 0.3s;
   box-shadow: 0 0 0 8px #e5091440, 0 0 32px 0 #e50914cc;
@@ -546,7 +843,6 @@ const searchInputStyle = computed(() => {
   }
 }
 
-/* Анімоване кільце */
 .avatar-animated-ring {
   position: absolute;
   left: 50%;
@@ -576,7 +872,6 @@ const searchInputStyle = computed(() => {
   }
 }
 
-/* --- FAVORITES HEART ICON --- */
 .favorites-heart-btn {
   background: none;
   border: none;
@@ -601,7 +896,6 @@ const searchInputStyle = computed(() => {
   color: #e50914 !important;
 }
 
-/* --- SEARCH ICON --- */
 .search-icon {
   background: none;
   border: none;
@@ -624,66 +918,103 @@ const searchInputStyle = computed(() => {
   color: #e50914;
 }
 
-/* --- SEARCH INPUT --- */
 .header-search.active {
-  width: 180px !important;
-  height: 44px !important;
-  font-size: 16px !important;
-  padding: 0 16px 0 38px !important;
-  border-radius: 8px !important;
+  width: 230px !important;
+  min-width: 140px !important;
+  height: 48px !important;
+  font-size: 17px !important;
+  padding: 0 22px 0 48px !important;
+  border-radius: 11px !important;
   border: 2px solid #e50914 !important;
-  background: rgba(24,24,28,0.98) !important;
+  background: #19191d !important;
   color: #fff !important;
-  box-shadow: 0 4px 24px 0 #e5091420, 0 2px 8px #fff2 !important;
   outline: none !important;
-  transition: border-color 0.22s, box-shadow 0.22s, width 0.22s, font-size 0.22s, padding 0.22s !important;
-  /* --- SEARCH BUTTON ANIMATION --- */
-  .search-btn-anim {
-    background: linear-gradient(90deg, #e50914 0%, #b0060f 100%);
-    border-radius: 50%;
-    box-shadow: 0 2px 8px #e5091440;
-    transition: background 0.22s, transform 0.22s, box-shadow 0.22s;
-    border: none;
-    outline: none;
-  }
-  .search-btn-anim:hover:not(:disabled), .search-btn-anim:focus-visible:not(:disabled) {
-    background: linear-gradient(90deg, #ff3c3c 0%, #e50914 100%);
-    transform: scale(1.08) translateY(-2px);
-    box-shadow: 0 0 0 4px rgba(229,9,20,0.18), 0 8px 24px #e5091440;
-  }
-  .search-btn-anim:active:not(:disabled) {
-    background: #e50914;
-    transform: scale(0.96);
-  }
-  .search-btn-anim:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-  }
+  box-shadow: 0 2px 16px 0 #e5091420 !important;
+  transition: border-color 0.18s, box-shadow 0.22s, width 0.22s, font-size 0.22s, padding 0.22s !important;
   position: relative !important;
   left: 0;
   top: 0;
   z-index: 2;
   margin-left: 0;
+  font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+}
+.header-search.active:focus {
+  border-color: #fff !important;
+  box-shadow: 0 0 0 3px #e50914aa, 0 2px 16px 0 #e5091420 !important;
+  outline: none !important;
+}
+.header-search.active::placeholder {
+  color: #fff9;
+  opacity: 1;
+  font-size: 16px;
+  letter-spacing: 0.01em;
+  font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+}
+
+.search-btn-anim {
+  position: absolute;
+  left: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 32px;
+  height: 32px;
+  background: none;
+  border: none;
+  outline: none;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.18s, box-shadow 0.18s, transform 0.18s;
+  color: #e50914;
+  z-index: 3;
+}
+.search-btn-anim:hover:not(:disabled), .search-btn-anim:focus-visible:not(:disabled) {
+  background: #e5091415;
+  box-shadow: 0 0 0 4px #e5091440;
+  transform: translateY(-50%) scale(1.12);
+}
+.search-btn-anim:active:not(:disabled) {
+  background: #e5091425;
+  transform: translateY(-50%) scale(0.96);
+}
+.search-btn-anim:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 @media (max-width: 600px) {
+  .burger-bar[data-v-c970699f] {
+    height: 3px !important;
+    border-radius: 1.5px !important;
+    margin: 3px 0 !important;
+    width: 28px !important;
+    background: #fff !important;
+    display: block !important;
+    transition: all 0.22s;
+  }
   .header-search.active {
-    width: 100px !important;
-    height: 36px !important;
-    font-size: 13px !important;
-    padding: 0 10px 0 38px !important;
-    border-radius: 6px !important;
+    width: 140px !important;
+    min-width: 120px !important;
+    height: 38px !important;
+    font-size: 15px !important;
+    padding: 0 12px 0 38px !important;
+    border-radius: 8px !important;
+    background: #18181c !important;
+    box-shadow: 0 4px 18px 0 #e5091440, 0 2px 8px #fff2, 0 0 0 2px #18181c !important;
   }
 }
 @media (max-width: 900px) {
   .header-search.active {
-    width: 140px !important;
-    height: 40px !important;
-    font-size: 15px !important;
-    padding: 0 14px 0 38px !important;
-    border-radius: 7px !important;
+    width: 180px !important;
+    min-width: 120px !important;
+    height: 42px !important;
+    font-size: 16px !important;
+    padding: 0 16px 0 38px !important;
+    border-radius: 10px !important;
+    background: #18181c !important;
+    box-shadow: 0 4px 18px 0 #e5091440, 0 2px 8px #fff2, 0 0 0 2px #18181c !important;
   }
 }
-/* --- FAVORITES DROPDOWN BEAUTY --- */
 .glass-fav {
   background: linear-gradient(120deg, rgba(24,24,28,0.98) 70%, rgba(229,9,20,0.10) 100%);
   backdrop-filter: blur(18px) saturate(1.1);
@@ -768,7 +1099,6 @@ const searchInputStyle = computed(() => {
   /* transform: scale(1) translateY(0); */
 }
 
-/* Bounce для badge */
 .bounce-enter-active, .bounce-leave-active {
   transition: transform 0.38s cubic-bezier(.4,0,.2,1), opacity 0.38s cubic-bezier(.4,0,.2,1);
 }
@@ -781,7 +1111,6 @@ const searchInputStyle = computed(() => {
   transform: scale(1);
 }
 
-/* Анимация для списка избранного */
 .fav-list-enter-active, .fav-list-leave-active {
   transition: all 0.38s cubic-bezier(.4,0,.2,1);
 }
@@ -794,7 +1123,6 @@ const searchInputStyle = computed(() => {
   transform: translateY(0) scale(1);
 }
 
-/* Поп для иконки и пустого состояния */
 @keyframes fav-pop {
   0% { opacity: 0; transform: scale(0.85) translateY(18px);}
   60% { opacity: 1; transform: scale(1.08) translateY(-4px);}
@@ -804,7 +1132,6 @@ const searchInputStyle = computed(() => {
   animation: fav-pop 0.55s cubic-bezier(.4,0,.2,1);
 }
 
-/* Заголовок и счетчик */
 .fav-title {
   font-size: 18px;
   color: #fff;
@@ -828,7 +1155,7 @@ const searchInputStyle = computed(() => {
   box-shadow: 0 2px 8px #e5091440;
   letter-spacing: 0.02em;
 }
-/* Netflix-like pulse animation for heart */
+
 @keyframes pulse-heart {
   0% { transform: scale(1); filter: drop-shadow(0 0 0 #e50914); }
   50% { transform: scale(1.18); filter: drop-shadow(0 0 12px #e50914); }
@@ -968,7 +1295,30 @@ const searchInputStyle = computed(() => {
   max-height: 62vh;
   overflow-y: auto;
   padding: 0.5rem 0;
+
+  scrollbar-width: thin;
+  scrollbar-color: #e50914 #18181c;
 }
+
+.favorites-list-wrapper::-webkit-scrollbar {
+  width: 8px;
+  background: #18181c;
+  border-radius: 8px;
+}
+.favorites-list-wrapper::-webkit-scrollbar-thumb {
+  background: #e50914;
+  border-radius: 8px;
+  min-height: 24px;
+  box-shadow: 0 2px 8px #e5091440;
+}
+.favorites-list-wrapper::-webkit-scrollbar-thumb:hover {
+  background: #ff3c3c;
+}
+.favorites-list-wrapper::-webkit-scrollbar-track {
+  background: #18181c;
+  border-radius: 8px;
+}
+
 .favorites-list {
   display: flex;
   flex-direction: column;
@@ -1065,7 +1415,7 @@ const searchInputStyle = computed(() => {
 @media (max-width: 420px) {
   .favorites-item {
     grid-template-columns: 44px minmax(0, 1fr);
-  }
+  } 
   .favorites-item-actions {
     grid-column: 2;
     width: 100%;

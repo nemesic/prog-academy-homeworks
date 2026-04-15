@@ -27,15 +27,19 @@
     </div>
 
     <RatingBox />
+    <ApiPost />
+    <InputDemo />
   </div>
 </template>
 
 <script setup>
+import ApiPost from '../components/ApiPost.vue'
 import { ref, computed, nextTick } from 'vue'
 
 import Feature from '../components/Feature.vue'
 import Popular from '../components/Popular.vue'
 import RatingBox from '../components/RatingBox.vue'
+import InputDemo from '../components/InputDemo.vue'
 
 
 const props = defineProps({
@@ -50,7 +54,7 @@ const selectedMovie = ref(null)
 const defaultMovie = {
   title: 'Stranger Things',
   description:
-    'In 1980s Indiana, a group of young friends witness supernatural forces and secret government exploits.',
+    'In 1980s Indiana, a group of young friends witness supernatural forces and secret government exploits. As they search for answers, the children unravel a series of extraordinary mysteries.',
   genres: ['Drama', 'Thriller', 'Supernatural'],
   year: 2019,
   director: 'Shawn Levy',
