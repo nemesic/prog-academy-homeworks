@@ -2104,7 +2104,7 @@ button:active,
   align-items: center;
   justify-content: center;
   animation: fadeInBg 0.2s;
-  backdrop-filter: blur(2px);
+  /* backdrop-filter: blur(2px); */
 }
 @keyframes fadeInBg {
   from { opacity: 0; }

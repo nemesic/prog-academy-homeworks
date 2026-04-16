@@ -1,3 +1,4 @@
+
 <template>
   <div class="moviecard" :style="cardStyle" @click="selectMovie">
     <div class="moviecard-img-wrap">
@@ -54,83 +55,4 @@ const cardStyle = computed(() => {
 })
 </script>
 
-<style scoped>
-.moviecard {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  background: #181818;
-  border-radius: 1rem;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.12);
-  cursor: pointer;
-  position: relative;
-  overflow: hidden;
-  transition: box-shadow .2s;
-}
-.moviecard:hover {
-  box-shadow: 0 4px 16px rgba(0,0,0,0.18);
-}
-.moviecard-img-wrap {
-  width: 100%;
-  height: 80%;
-  position: relative;
-  display: flex;
-  align-items: flex-end;
-  justify-content: center;
-}
-.moviecard-img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border-top-left-radius: 1rem;
-  border-top-right-radius: 1rem;
-  background: #222;
-}
-.moviecard-fav {
-  position: absolute;
-  right: 10px;
-  bottom: 10px;
-  background: rgba(24,24,24,0.7);
-  border: none;
-  border-radius: 50%;
-  width: 36px;
-  height: 36px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: background .2s;
-  z-index: 2;
-}
-.moviecard-fav.active {
-  background: #fff2;
-}
-.moviecard-bottom {
-  width: 100%;
-  min-height: 36px;
-  background: linear-gradient(0deg, #181818 90%, #181818cc 100%, transparent 100%);
-  border-bottom-left-radius: 1rem;
-  border-bottom-right-radius: 1rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding-bottom: 4px;
-}
-.moviecard-title {
-  color: #fff;
-  font-size: 1rem;
-  font-weight: 500;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  max-width: 80px;
-}
-@media (max-width: 700px) {
-  .moviecard-title { max-width: 60px; font-size: 0.93rem; }
-  .moviecard-bottom { padding-bottom: 4px; }
-}
-@media (max-width: 480px) {
-  .moviecard-title { max-width: 44px; font-size: 0.85rem; }
-  .moviecard-bottom { padding-bottom: 2px; }
-}
-</style>
+<style>@import '../assets/MovieCard.css'; </style>
